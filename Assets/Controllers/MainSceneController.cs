@@ -10,11 +10,14 @@ public class MainSceneController : MonoBehaviour
 {
 	public float secPerDays = 0.5f;
 	
-	private string date;
+	//public Question[] questions;
 
-	public GameObject DateText;
-	public GameObject MoneyScoreText;
+	public GameObject Date;
+	public GameObject Score;
 	public GameObject ContextMenu;
+	public GameObject Creation; 
+	public GameObject TargetAudience;
+	public GameObject Specialization;
 	
 	public static int moneyScore = 50000;
 	public static int year = 1;
@@ -31,51 +34,88 @@ public class MainSceneController : MonoBehaviour
 	
     void Start()
     {
-		MoneyScoreText.GetComponent<TMPro.TextMeshProUGUI>().text = "Счёт: " + moneyScore;
+		
     }
 
     void Update()
     {
-        if(Input.GetKeyUp(KeyCode.Mouse1))
+		Clock();
+		SetScore();
+	
+		if(Input.GetKeyUp(KeyCode.Mouse1) && !CheckOnStopTime())
 		{
 			bool flag = ContextMenu.activeSelf;
 			ContextMenu.SetActive(!flag);
-		}
-		
-		if(timer >= secPerDays)
-		{
-			day++;
-			if(day >= MAXDAY)
-			{
-				week++;
-				if(week >= MAXWEEK)
-				{
-					month++;
-					if(month >= MAXMONTH)
-					{
-						year++;
-						
-						month = 1;
-					}
-					
-					week = 1;
-				}
-				
-				day = 1;
-			}
-			
-			SetTimeDateString();
-			
-			timer = 0;
-		}
-		else
-		{
-			timer += Time.deltaTime;
+			ContextMenu.transform.position = Input.mousePosition;
 		}
     }
 	
-	void SetTimeDateString()
+	void Clock()
+	{ 
+		if(!CheckOnStopTime()){
+			if(timer >= secPerDays)
+			{
+				day++;
+				if(day >= MAXDAY)
+				{
+					week++;
+					if(week >= MAXWEEK)
+					{
+						month++;
+						moneyScore -= 4000;
+						if(month >= MAXMONTH)
+						{
+							year++;
+							month = 1;
+						}
+						week = 1;
+					}
+					day = 1;
+				}
+				SetDate();
+				timer = 0;
+			}
+			else
+			{
+				timer += Time.deltaTime;
+			}
+		}
+	}
+	
+	bool CheckOnStopTime()
 	{
-		DateText.GetComponent<TMPro.TextMeshProUGUI>().text = "Н: "+week+" М: "+month+" Г: "+year;
-	}	
+		bool isCreationActive = Creation.activeSelf;
+		bool isTargetAudienceActive = TargetAudience.activeSelf;
+		bool isSpecializationActive = Specialization.activeSelf;
+
+		return isCreationActive || isTargetAudienceActive || isSpecializationActive;
+	}
+	
+	void SetDate()
+	{
+		Date.GetComponent<TMPro.TextMeshProUGUI>().text = "Дата: Н: "+week+" М: "+month+" Г: "+year;
+	}
+	
+	void SetScore()
+	{
+		Score.GetComponent<TMPro.TextMeshProUGUI>().text = "Счёт: " + moneyScore + "$";
+		/*if(moneyScore <= 0)
+		{
+			Score.GetComponent<TMPro.TextMeshProUGUI>().color = Color.Red;
+		}*/
+	}
+	
+	/*public class Question
+	{
+		public static String QuestionText { get; };
+		public static String AnswerText1 { get; };
+		public static String AnswerText2 { get; };
+		
+		public Question(String questionText, String answerText1, String answerText2){
+			QuestionText = questionText;
+			AnswerText1 = answerText1;
+			AnswerText2 = answerText2;
+		}
+	}
+	*/
 }
