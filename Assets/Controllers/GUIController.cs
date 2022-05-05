@@ -1,15 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+using UnityEngine.SceneManagement;
 
-public class StartButtonController : MonoBehaviour
+public class GUIController : MonoBehaviour
 {
-	public GameObject ProductNameText;
+    public GameObject ProductNameText;
 	public GameObject InputProductName;
 
     public void SetProductName()
 	{
 		ProductNameText.GetComponent<TMPro.TextMeshProUGUI>().text = InputProductName.GetComponent<TMPro.TextMeshProUGUI>().text;
+	}
+	
+	public void BackToMenu()
+	{
+		SceneManager.LoadScene("MenuScene");
 	}
 }

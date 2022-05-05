@@ -5,17 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuSceneControllers : MonoBehaviour
 {
-    [SerializeField] private string sceneToOpen = "MainScene";
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
+    private string sceneToOpen = "MainScene";
 
     public void OpenScene()
     {
