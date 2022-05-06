@@ -9,12 +9,12 @@ public class MenuSceneControllers : MonoBehaviour
 
     public void OpenScene()
     {
-	SceneManager.LoadScene(sceneToOpen);
+		SceneManager.LoadScene(sceneToOpen);
     }
 
     public void QuitGame()
     {
-	Application.Quit();
-	Debug.Log("Quit complete!");
+		Application.Quit();
+		Debug.Log("Quit complete!");
     }
 }
