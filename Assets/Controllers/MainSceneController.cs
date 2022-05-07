@@ -8,9 +8,9 @@ using UnityEngine.SceneManagement;
 
 public class MainSceneController : MonoBehaviour
 {
-	public List<Question> questions;
-	public List<Answer> answers;
-	public List<Product> products;
+	public List<Question> questions = new List<Question>();
+	public List<Answer> answers = new List<Answer>();
+	public List<Product> products = new List<Product>();
 
 	public GameObject Date; //Объект отображения внутриигрового времени
 	public GameObject Score; //Объект отображения денежного счёта игрока
@@ -48,6 +48,8 @@ public class MainSceneController : MonoBehaviour
 	public bool gameFinishedFlag = false;
 	public int askedQuestionNumber = 0;
 	public double profitRatio;
+	public double profit1;
+	public double profit2;
 	public static int moneyScore = 50000; //денежный счёт игрока
 	public static int monthlyExpenses = 4000; //месячные затраты
 	public static int experienceScore = 0; //счёт очков опыта игрока
@@ -55,10 +57,19 @@ public class MainSceneController : MonoBehaviour
 	void Start()
 	{
 		SetScore();
-		questions.Add(new Question("Что бы вы сделали?", "Поел", "Поспал", 0.7f, 1.3f));
-		questions.Add(new Question("Что бы вы съели?", "Пельмени", "Вареники", 1.4f, 0.9f));
-		questions.Add(new Question("Где бы вы спали?", "Диван", "Кровать", 1, 0.1f));
-		questions.Add(new Question("Что бы предпочитаете в качестве соуса?", "Майонез", "Кетчуп", 0.5f, 1.5f));
+		questions.Add(new Question("Чему стоит уделить большее внимание?", "Графика", "Фукционал", 0.7, 1.3));
+		questions.Add(new Question("Для разработки продукта в коллектив требуются новые люди. Какой уровень будущих сотрудников будет приемлемым?", "Студенты", "Специалисты", 0.9, 1.4));
+		questions.Add(new Question("Презентовать ли будущий продукт на выставке IT-отрасли?", "Да", "Нет", 1, 0.9));
+		questions.Add(new Question("Недавно разгорелся скандал из-за утечки данных о пользователях популярного сайта доставки еды. Стоит ли нам лучше поработать над защитой персональных данных?", "Да", "Нет", 1.2, 1));
+		questions.Add(new Question("Один из сотрудников компании на недавнем совещании заявил о скором увольнении из-за переезда. Стоит ли нам уже сейчас найти ему замену", "Да", "Нет", 1, 0.8));
+		questions.Add(new Question("Один из сотрудников заявил о необходимости найма Scrum-менеджера для более грамотной работы команды. Стоит ли нам вложиться в это?", "Да", "Нет", 1.15, 0.9));
+		questions.Add(new Question("Использовать ли новую неопробованную технологию обратной связи с разработчиками на нашем продукте?", "Да", "Нет", 0.95, 1));
+		questions.Add(new Question("Уже скоро наступит дата очердного дедлайна для нашей команды, однако темп разработки говорит о нехватке времени для тестирования продукта. Стоит ли закрыть глаза на тесты и сделать работу в срок?", "Да", "Нет", 0.85, 1.2));
+		questions.Add(new Question("Скоро наступит лето, большинство сотрудников на это время запланировали свои отпуска. Для успешного завершения проекта нужно либо нанять новых сотрудников на время, либо обратиться к фрилансу. Что мы сделаем?", "Новые люди", "Фриланс", 1, 0.8));
+		questions.Add(new Question("В последнее время сотрудники все больше говорят о необходимости переезда в более просторный офис. Послушать ли сотрудников?", "Да", "Нет", 1.4, 0.9));
+		questions.Add(new Question("Один из сотрудников жалуется наневыносимую жару в кабинете даже с открытым окном. Поставить ли кондиционеры в офисе?", "Да", "Нет", 1.2, 0.95));
+		questions.Add(new Question("Все больше IT-компаний предоставляют своим подчиненным ДМС(Дополнительное Медицинское Страхование), стоит ли нам подхватить эту волну?", "Да", "Нет", 1.3, 1));
+		questions.Add(new Question("Недавно PR-менеджер компании предложил прорекламировать будущий продукт, заплатив гонорар известным блогерам. Стоит ли послушать его?", "Да", "Нет", 1.1, 1));
 	}
 
 	void Update()
@@ -195,7 +206,9 @@ public class MainSceneController : MonoBehaviour
 		QuestionTextPanel.GetComponent<TMPro.TextMeshProUGUI>().text = randomQuestion.QuestionText;
 		AnswerText1Panel.GetComponent<TMPro.TextMeshProUGUI>().text = randomQuestion.AnswerText1;
 		AnswerText2Panel.GetComponent<TMPro.TextMeshProUGUI>().text = randomQuestion.AnswerText2;
-
+		profit1 = randomQuestion.AnswerProfitRatio1;
+		profit2 = randomQuestion.AnswerProfitRatio2;
+		
 		QuestionPanel.SetActive(true);
 	}
 
@@ -204,12 +217,12 @@ public class MainSceneController : MonoBehaviour
 		if (AnswerButton1.GetComponent<Toggle>().isOn)
 		{
 			answers.Add(new Answer(QuestionTextPanel.GetComponent<TMPro.TextMeshProUGUI>().text,
-				AnswerText1Panel.GetComponent<TMPro.TextMeshProUGUI>().text, 1.2));
+				AnswerText1Panel.GetComponent<TMPro.TextMeshProUGUI>().text, profit1));
 		}
 		else if (AnswerButton2.GetComponent<Toggle>().isOn)
 		{
 			answers.Add(new Answer(QuestionTextPanel.GetComponent<TMPro.TextMeshProUGUI>().text,
-				AnswerText2Panel.GetComponent<TMPro.TextMeshProUGUI>().text, 0.8));
+				AnswerText2Panel.GetComponent<TMPro.TextMeshProUGUI>().text, profit2));
 		}
 
 		if (askedQuestionNumber >= 5)
