@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using TMPro;
 using System.Timers;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,52 +13,68 @@ public class MainSceneController : MonoBehaviour
 	public List<Answer> answers = new List<Answer>();
 	public List<Product> products = new List<Product>();
 
-	public GameObject Date; //Объект отображения внутриигрового времени
-	public GameObject Score; //Объект отображения денежного счёта игрока
-	public GameObject ContextMenu; //Объект контекстной менюшки, открываемый при нажатии ПКМ 
-	public GameObject Creation; //Объект панели создания
-	public GameObject TargetAudience; //Объект панели целевой аудитории
-	public GameObject Specialization; //Объект панели специализации
-	public GameObject QuestionPanel; //Объект панели вопроса
-	public GameObject QuestionTextPanel;
-	public GameObject AnswerText1Panel;
-	public GameObject AnswerText2Panel;
-	public GameObject AnswerButton1;
-	public GameObject AnswerButton2;
+	public GameObject Date; //Объект внутриигрового времени
+	public GameObject Score; //Объект денежного счёта игрока
+	public GameObject ContextMenu; //Контекстное меню
+	public GameObject Creation; //Панель создания продукта
+	public GameObject TargetAudience; //Панель целевой аудитории
+	public GameObject Specialization; //Панель специализации
+	public GameObject QuestionPanel; //Панель вопроса
+	public GameObject QuestionTextPanel; //Текст вопроса
+	public GameObject AnswerText1Panel; //Текст ответа 1
+	public GameObject AnswerText2Panel; //Текст ответа 2
+	public GameObject AnswerButton1; //Кнопка ответа 1
+	public GameObject AnswerButton2; //Кнопка ответа 2
 	public GameObject PropertyRightButton1;
 	public GameObject PropertyRightButton2;
-	public GameObject Release;
-	public GameObject WinGamePanel;
-	public GameObject LoseGamePanel;
+	public GameObject Release; //Панель выпуска продукта
+	public GameObject WinGamePanel; //Панель победы
+	public GameObject LoseGamePanel; //Панель поражения
+	public GameObject InputProductName; //Ввод названия продукта
 
-	public float secPerDays = 0.5f; //Число реальных секунд приходящихся на один игровой день
+	//Общие переменные
+	float secPerDay = 0.2f; //Число реальных секунд приходящихся на один игровой день
 
 	const int MaxDay = 8; //Ограничитель счётчика дней
 	const int MaxWeek = 5; //Ограничитель счётчика недель
 	const int MaxMonth = 13; //Ограничитель счётчика месяцев
 
+	static int winningScore = 200000;
+	static int losingScore = -50000;
+	
+	//Переменные продукта
+	static int creationCost = 25000;
+	static int questionsNumber = 5; //Кол-во вопросов задаваемых при создании продукта
+	
+	//Переменные игрока 
+	static int moneyScore = 50000; //денежный счёт игрока
+	static int experienceScore = 0; //счёт очков опыта игрока
+	static int monthlyExpenses = 4000; //месячные затраты 
+	
+	//Временные переменные 
 	static int year = 1;
 	static int month = 1;
 	static int week = 1;
 	static int day = 1;
 	float timer = 0;
-
-	public string productName = "NameCop";
-	public bool askNewQuestionFlag = false;
-	public bool releaseFlag = false;
-	public bool gameFinishedFlag = false;
-	public int askedQuestionNumber = 0;
-	public double profitRatio;
-	public double profit1;
-	public double profit2;
-	public static int moneyScore = 50000; //денежный счёт игрока
-	public static int monthlyExpenses = 4000; //месячные затраты
-	public static int experienceScore = 0; //счёт очков опыта игрока
+	
+	//Флаги
+	bool askNewQuestionFlag = false;
+	bool releaseFlag = false;
+	bool gameFinishedFlag = false;
+	
+	//Вспомогательные переменные
+	string productName;
+	int askedQuestionCount = 0;
+	double profitRatio;
+	double profit1;
+	double profit2;
 
 	void Start()
 	{
-		SetScore();
-		questions.Add(new Question("Чему стоит уделить большее внимание?", "Графика", "Фукционал", 0.7, 1.3));
+		SetDate();
+		SetScore(0);
+		questions.Add(new Question("Мы создаем новое меню для пользовательского интерфейса, на что стоит уделить большее внимание?", "Красота", "Фукционал", 0.85, 1.15));
 		questions.Add(new Question("Для разработки продукта в коллектив требуются новые люди. Какой уровень будущих сотрудников будет приемлемым?", "Студенты", "Специалисты", 0.9, 1.4));
 		questions.Add(new Question("Презентовать ли будущий продукт на выставке IT-отрасли?", "Да", "Нет", 1, 0.9));
 		questions.Add(new Question("Недавно разгорелся скандал из-за утечки данных о пользователях популярного сайта доставки еды. Стоит ли нам лучше поработать над защитой персональных данных?", "Да", "Нет", 1.2, 1));
@@ -75,50 +92,35 @@ public class MainSceneController : MonoBehaviour
 	void Update()
 	{
 		Clock();
-		InputOutputCheck();
+		IOCheck();
 	}
 
 	void Clock()
 	{
 		if (!CheckOnStopTime())
 		{
-			if (timer >= secPerDays)
+			if (timer >= secPerDay)
 			{
 				day++;
 				if (day >= MaxDay)
 				{
-					if (releaseFlag)
-					{
-						Release.SetActive(true);
-						releaseFlag = false;
-						askNewQuestionFlag = false;
-					}
-
-					if (askNewQuestionFlag)
-					{
-						AskQuestion();
-						askNewQuestionFlag = false;
-					}
-
+					day = 1;
 					week++;
+					
 					if (week >= MaxWeek)
 					{
+						week = 1;
 						month++;
-						moneyScore -= monthlyExpenses;
-						SetScore();
+						
+						MonthlyEvents();
 						if (month >= MaxMonth)
 						{
-							year++;
 							month = 1;
+							year++;
 						}
-
-						week = 1;
 					}
-
-					day = 1;
+					WeeklyEvents();
 				}
-
-				SetDate();
 				timer = 0;
 			}
 			else
@@ -126,6 +128,29 @@ public class MainSceneController : MonoBehaviour
 				timer += Time.deltaTime;
 			}
 		}
+	}
+	
+	void WeeklyEvents() //События, происходящие каждую новую неделю
+	{		
+		if (releaseFlag)
+		{
+			Release.SetActive(true);
+			releaseFlag = false;
+			askNewQuestionFlag = false;
+		}
+		
+		if (askNewQuestionFlag)
+		{
+			AskQuestion();
+			askNewQuestionFlag = false;					
+		}
+		SetDate();
+	}
+	
+	void MonthlyEvents() //События, происходящие каждый новый месяц
+	{
+		//moneyScore -= monthlyExpenses;
+		SetScore(-monthlyExpenses);
 	}
 
 	bool CheckOnStopTime()
@@ -142,37 +167,40 @@ public class MainSceneController : MonoBehaviour
 
 	void SetDate()
 	{
-		Date.GetComponent<TMPro.TextMeshProUGUI>().text = "Дата: Н: " + week + " М: " + month + " Г: " + year;
+		Date.GetComponent<TMPro.TextMeshProUGUI>().text = "Н: " + week + " М: " + month + " Г: " + year;
 	}
 
-	void SetScore()
+	void SetScore(int deltaScore)
 	{
-		Score.GetComponent<TMPro.TextMeshProUGUI>().text = "Счёт: " + moneyScore + "$";
-		Score.GetComponent<TMPro.TextMeshProUGUI>().color = new Color(0, 1, 0, 1);
-		if (moneyScore <= 0)
-		{
-			Score.GetComponent<TMPro.TextMeshProUGUI>().color = new Color(1, 0, 0, 1);
-		}
+		moneyScore += deltaScore;
+		if (moneyScore <= 0) Score.GetComponent<TMPro.TextMeshProUGUI>().color = new Color(1, 0, 0, 1); //Покрас текста в красный цвет
+		else Score.GetComponent<TMPro.TextMeshProUGUI>().color = new Color(0, 1, 0, 1); //Покрас текста в зеленый цвет
 
-		if (moneyScore >= 200000 && !gameFinishedFlag)
+		if (moneyScore >= winningScore && !gameFinishedFlag)
 		{
 			gameFinishedFlag = true;
 			WinGame();
 		}
 		
-		if (moneyScore <= -50000 && !gameFinishedFlag)
+		if (moneyScore <= losingScore && !gameFinishedFlag)
 		{
 			gameFinishedFlag = true;
 			LoseGame();
 		}
+		
+		Score.GetComponent<TMPro.TextMeshProUGUI>().text = moneyScore + "$";
 	}
-
-	public void SetAskNewQuestion()
+	
+	void IOCheck()
 	{
-		askNewQuestionFlag = true;
+		if (Input.GetKeyUp(KeyCode.Mouse1) && !CheckOnStopTime())
+		{
+			ContextMenu.transform.position = Input.mousePosition;
+			ContextMenu.SetActive(!ContextMenu.activeSelf);
+		}
 	}
 
-	public void StartNewGame()
+	/*public void StartNewGame()
 	{
 		questions = new List<Question>();
 		answers = new List<Answer>();
@@ -182,25 +210,23 @@ public class MainSceneController : MonoBehaviour
 		week = 1;
 		day = 1;
 		timer = 0;
-		askedQuestionNumber = 0;
+		askedQuestionCount = 0;
 		moneyScore = 50000;
 		monthlyExpenses = 4000;
 		experienceScore = 0;
-	}
-
-	void InputOutputCheck()
+	}*/
+	
+	
+	public void CreateNewProduct()
 	{
-		if (Input.GetKeyUp(KeyCode.Mouse1) && !CheckOnStopTime())
-		{
-			bool flag = ContextMenu.activeSelf;
-			ContextMenu.SetActive(!flag);
-			ContextMenu.transform.position = Input.mousePosition;
-		}
+		askNewQuestionFlag = true;
+		productName = InputProductName.GetComponent<TMP_InputField>().text;
+		SetScore(-creationCost);
 	}
 
 	public void AskQuestion()
 	{
-		askedQuestionNumber++;
+		askedQuestionCount++;
 		var randomQuestion = questions[new System.Random().Next(0, questions.Count)];
 
 		QuestionTextPanel.GetComponent<TMPro.TextMeshProUGUI>().text = randomQuestion.QuestionText;
@@ -225,11 +251,11 @@ public class MainSceneController : MonoBehaviour
 				AnswerText2Panel.GetComponent<TMPro.TextMeshProUGUI>().text, profit2));
 		}
 
-		if (askedQuestionNumber >= 5)
+		if (askedQuestionCount >= questionsNumber)
 		{
 			askNewQuestionFlag = false;
 			releaseFlag = true;
-			askedQuestionNumber = 0;
+			askedQuestionCount = 0;
 		}
 		else
 		{
@@ -242,45 +268,37 @@ public class MainSceneController : MonoBehaviour
 	public void ReleaseProduct()
 	{
 		profitRatio = GetProfitRatio();
-		if (PropertyRightButton1.activeSelf)
+		var income = 0;
+		if (PropertyRightButton1.GetComponent<Toggle>().isOn)
 		{
-			products.Add(new Product(productName, profitRatio, 10000, PropertyRights.SOLD_TO_ANOTHER_COMPANY));
-			moneyScore += (int) (25000 * profitRatio);
-			SetScore();
+			products.Add(new Product(productName, profitRatio, creationCost, PropertyRights.SOLD_TO_ANOTHER_COMPANY));
+			income = (int)(creationCost * profitRatio);
 		}
-		else if (PropertyRightButton2.activeSelf)
+		else if (PropertyRightButton2.GetComponent<Toggle>().isOn)
 		{
-			products.Add(new Product(productName, profitRatio, 10000, PropertyRights.BELONGS_TO_OUR_COMPANY));
-			moneyScore += (int) (5000 * profitRatio);
-			SetScore();
+			products.Add(new Product(productName, profitRatio, creationCost, PropertyRights.BELONGS_TO_OUR_COMPANY));
+			income = (int)(creationCost * 0.2 * profitRatio);
 		}
+		SetScore(income);
 	}
 
 	double GetProfitRatio()
 	{
-		double a = 1;
+		double k = 1;
 		foreach (var answer in answers)
 		{
-			a *= answer.AnswerProfitRatio;
+			k *= answer.AnswerProfitRatio;
 		}
-
 		answers.Clear();
-		return a;
+		return k;
 	}
 
-	public void CreateNewProduct()
-	{
-		SetAskNewQuestion();
-		moneyScore -= 25000;
-		SetScore();
-	}
-
-	public void WinGame()
+	void WinGame()
 	{
 		WinGamePanel.SetActive(true);
 	}
 	
-	public void LoseGame()
+	void LoseGame()
 	{
 		LoseGamePanel.SetActive(true);
 	}
@@ -334,7 +352,7 @@ public class Product
 	}
 }
 
-public enum PropertyRights
+public enum PropertyRights 
 {
 	SOLD_TO_ANOTHER_COMPANY,
 	BELONGS_TO_OUR_COMPANY
