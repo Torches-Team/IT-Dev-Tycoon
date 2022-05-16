@@ -19,6 +19,7 @@ public class MainSceneController : MonoBehaviour
 	public GameObject Creation; //Панель создания продукта
 	public GameObject TargetAudience; //Панель целевой аудитории
 	public GameObject Specialization; //Панель специализации
+	public GameObject BottomPanelName; //Название компании на нижней панели
 	public GameObject QuestionPanel; //Панель вопроса
 	public GameObject QuestionTextPanel; //Текст вопроса
 	public GameObject AnswerText1Panel; //Текст ответа 1
@@ -31,6 +32,10 @@ public class MainSceneController : MonoBehaviour
 	public GameObject WinGamePanel; //Панель победы
 	public GameObject LoseGamePanel; //Панель поражения
 	public GameObject InputProductName; //Ввод названия продукта
+	public GameObject DarkBackground; //Затемнение фона
+	
+	public GameObject[] Cells;
+	public GameObject[] Grades;
 
 	//Общие переменные
 	float secPerDay = 0.2f; //Число реальных секунд приходящихся на один игровой день
@@ -43,8 +48,9 @@ public class MainSceneController : MonoBehaviour
 	static int losingScore = -50000;
 	
 	//Переменные продукта
-	static int creationCost = 25000;
-	static int questionsNumber = 5; //Кол-во вопросов задаваемых при создании продукта
+	static int creationCost = 25000; //Стоимость создания нового продукта
+	static int questionsCount = 5; //Кол-во вопросов задаваемых при создании продукта
+	static int questionNumber = 0; //Номер вопроса, задаваемого в данный момент
 	
 	//Переменные игрока 
 	static int moneyScore = 50000; //денежный счёт игрока
@@ -99,6 +105,7 @@ public class MainSceneController : MonoBehaviour
 	{
 		if (!CheckOnStopTime())
 		{
+			DarkBackground.SetActive(false);
 			if (timer >= secPerDay)
 			{
 				day++;
@@ -128,6 +135,7 @@ public class MainSceneController : MonoBehaviour
 				timer += Time.deltaTime;
 			}
 		}
+		else DarkBackground.SetActive(true);
 	}
 	
 	void WeeklyEvents() //События, происходящие каждую новую неделю
@@ -149,7 +157,6 @@ public class MainSceneController : MonoBehaviour
 	
 	void MonthlyEvents() //События, происходящие каждый новый месяц
 	{
-		//moneyScore -= monthlyExpenses;
 		SetScore(-monthlyExpenses);
 	}
 
@@ -159,10 +166,11 @@ public class MainSceneController : MonoBehaviour
 		bool isTargetAudienceActive = TargetAudience.activeSelf;
 		bool isSpecializationActive = Specialization.activeSelf;
 		bool isQuestionActive = QuestionPanel.activeSelf;
+		bool isReleaseActive = Release.activeSelf;
 		bool isWinGameActive = WinGamePanel.activeSelf;
 		bool isLoseGameActive = LoseGamePanel.activeSelf;
 
-		return isCreationActive || isTargetAudienceActive || isSpecializationActive || isQuestionActive || isWinGameActive || isLoseGameActive;
+		return isCreationActive || isTargetAudienceActive || isSpecializationActive || isQuestionActive || isReleaseActive || isWinGameActive || isLoseGameActive;
 	}
 
 	void SetDate()
@@ -173,8 +181,8 @@ public class MainSceneController : MonoBehaviour
 	void SetScore(int deltaScore)
 	{
 		moneyScore += deltaScore;
-		if (moneyScore <= 0) Score.GetComponent<TMPro.TextMeshProUGUI>().color = new Color(1, 0, 0, 1); //Покрас текста в красный цвет
-		else Score.GetComponent<TMPro.TextMeshProUGUI>().color = new Color(0, 1, 0, 1); //Покрас текста в зеленый цвет
+		if (moneyScore <= 0) Score.GetComponent<TMPro.TextMeshProUGUI>().color = new Color32(255, 255, 255, 255); //Покрас текста в белый цвет при отрицательном балансе
+		else Score.GetComponent<TMPro.TextMeshProUGUI>().color = new Color32(60, 200, 60, 255); //Покрас текста в зеленый цвет при положительном балансе
 
 		if (moneyScore >= winningScore && !gameFinishedFlag)
 		{
@@ -221,14 +229,19 @@ public class MainSceneController : MonoBehaviour
 	{
 		askNewQuestionFlag = true;
 		productName = InputProductName.GetComponent<TMP_InputField>().text;
+		BottomPanelName.GetComponent<TextMeshProUGUI>().text = productName;
+		ResetBottomPanel();
 		SetScore(-creationCost);
 	}
 
 	public void AskQuestion()
 	{
+		MarkCurrentQuestion(askedQuestionCount);
 		askedQuestionCount++;
+		
 		var randomQuestion = questions[new System.Random().Next(0, questions.Count)];
 
+		DarkBackground.SetActive(true);
 		QuestionTextPanel.GetComponent<TMPro.TextMeshProUGUI>().text = randomQuestion.QuestionText;
 		AnswerText1Panel.GetComponent<TMPro.TextMeshProUGUI>().text = randomQuestion.AnswerText1;
 		AnswerText2Panel.GetComponent<TMPro.TextMeshProUGUI>().text = randomQuestion.AnswerText2;
@@ -240,6 +253,8 @@ public class MainSceneController : MonoBehaviour
 
 	public void ReadAnswer()
 	{
+		MarkDoneQuestion(askedQuestionCount - 1);
+		
 		if (AnswerButton1.GetComponent<Toggle>().isOn)
 		{
 			answers.Add(new Answer(QuestionTextPanel.GetComponent<TMPro.TextMeshProUGUI>().text,
@@ -251,7 +266,7 @@ public class MainSceneController : MonoBehaviour
 				AnswerText2Panel.GetComponent<TMPro.TextMeshProUGUI>().text, profit2));
 		}
 
-		if (askedQuestionCount >= questionsNumber)
+		if (askedQuestionCount >= questionsCount)
 		{
 			askNewQuestionFlag = false;
 			releaseFlag = true;
@@ -301,6 +316,25 @@ public class MainSceneController : MonoBehaviour
 	void LoseGame()
 	{
 		LoseGamePanel.SetActive(true);
+	}
+	
+	void MarkCurrentQuestion(int questionNumber)
+	{
+		Cells[questionNumber].GetComponent<Image>().color = new Color32(154, 154, 154, 255);
+	}
+	
+	void MarkDoneQuestion(int questionNumber)
+	{
+		Cells[questionNumber].GetComponent<Image>().color = new Color32(60, 200, 60, 255);
+	}
+	
+	void ResetBottomPanel()
+	{
+		foreach (var cell in Cells)
+		{
+			cell.GetComponent<Image>().color = new Color32(204, 204, 204, 255);
+		}
+		questionNumber = 0;
 	}
 }
 
