@@ -18,7 +18,7 @@ public class MainSceneController : MonoBehaviour
 	public GameObject ContextMenu; //Контекстное меню
 	public GameObject Creation; //Панель создания продукта
 	public GameObject TargetAudience; //Панель целевой аудитории
-	public GameObject Specialization; //Панель специализации
+	public GameObject SpecializationPanel; //Панель специализации
 	public GameObject BottomPanelName; //Название компании на нижней панели
 	public GameObject QuestionPanel; //Панель вопроса
 	public GameObject QuestionTextPanel; //Текст вопроса
@@ -26,16 +26,27 @@ public class MainSceneController : MonoBehaviour
 	public GameObject AnswerText2Panel; //Текст ответа 2
 	public GameObject AnswerButton1; //Кнопка ответа 1
 	public GameObject AnswerButton2; //Кнопка ответа 2
-	public GameObject PropertyRightButton1;
-	public GameObject PropertyRightButton2;
+	//public GameObject PropertyRightButton1;
+	//public GameObject PropertyRightButton2; 
 	public GameObject Release; //Панель выпуска продукта
 	public GameObject WinGamePanel; //Панель победы
 	public GameObject LoseGamePanel; //Панель поражения
 	public GameObject InputProductName; //Ввод названия продукта
 	public GameObject DarkBackground; //Затемнение фона
 	
+	
+	public GameObject[] ProjectSizeButtons;
+	public GameObject[] SpecializationButtons;
+	public GameObject[] AgeAudienceButtons;
+	public GameObject[] GenderAudienceButtons;
+	public GameObject[] PropertyRightButtons;
+	
 	public GameObject[] Cells;
 	public GameObject[] Grades;
+	
+
+	//public PropertyRight propertyRight;
+	//public Specialization specialization;
 
 	//Общие переменные
 	float secPerDay = 0.2f; //Число реальных секунд приходящихся на один игровой день
@@ -71,6 +82,7 @@ public class MainSceneController : MonoBehaviour
 	
 	//Вспомогательные переменные
 	string productName;
+	int productCost;
 	int askedQuestionCount = 0;
 	double profitRatio;
 	double profit1;
@@ -164,7 +176,7 @@ public class MainSceneController : MonoBehaviour
 	{
 		bool isCreationActive = Creation.activeSelf;
 		bool isTargetAudienceActive = TargetAudience.activeSelf;
-		bool isSpecializationActive = Specialization.activeSelf;
+		bool isSpecializationActive = SpecializationPanel.activeSelf;
 		bool isQuestionActive = QuestionPanel.activeSelf;
 		bool isReleaseActive = Release.activeSelf;
 		bool isWinGameActive = WinGamePanel.activeSelf;
@@ -228,10 +240,101 @@ public class MainSceneController : MonoBehaviour
 	public void CreateNewProduct()
 	{
 		askNewQuestionFlag = true;
+		
 		productName = InputProductName.GetComponent<TMP_InputField>().text;
 		BottomPanelName.GetComponent<TextMeshProUGUI>().text = productName;
 		ResetBottomPanel();
-		SetScore(-creationCost);
+		
+		ProjectSize projectSize = ProjectSizeCheck();
+		productCost = projectSize == ProjectSize.MINOR ? 25000 : 200000;
+		
+		Specialization specialization = SpecializationCheck();
+		AgeAudience ageAudience = AgeAudienceCheck();
+		GenderAudience genderAudience = GenderAudienceCheck();
+		PropertyRight propertyRight = PropertyRightCheck();
+		
+		SetScore(-productCost);
+		Product product = new Product(productName,
+									  1,
+									  productCost,
+									  projectSize,
+									  specialization,
+									  ageAudience,
+									  genderAudience,
+									  propertyRight);
+	}
+	
+	ProjectSize ProjectSizeCheck()
+	{
+		if (ProjectSizeButtons[0].GetComponent<Toggle>().isOn)
+		{
+			return ProjectSize.MINOR;
+		}
+		else if (ProjectSizeButtons[1].GetComponent<Toggle>().isOn)
+		{
+			return ProjectSize.MAJOR;
+		}
+		else return ProjectSize.MINOR;
+	}
+	
+	Specialization SpecializationCheck()
+	{
+		if (SpecializationButtons[0].GetComponent<Toggle>().isOn)
+		{
+			return Specialization.WEBSITE;
+		}
+		else if (ProjectSizeButtons[1].GetComponent<Toggle>().isOn)
+		{
+			return Specialization.GAME;
+		}
+		else return Specialization.WEBSITE;
+	}
+	
+	AgeAudience AgeAudienceCheck()
+	{
+		if (AgeAudienceButtons[0].GetComponent<Toggle>().isOn)
+		{
+			return AgeAudience.CHILDREN;
+		}
+		else if (AgeAudienceButtons[1].GetComponent<Toggle>().isOn)
+		{
+			return AgeAudience.EVERYONE;
+		}
+		else if (AgeAudienceButtons[2].GetComponent<Toggle>().isOn)
+		{
+			return AgeAudience.ADULT;
+		}
+		else return AgeAudience.EVERYONE;
+	}
+	
+	GenderAudience GenderAudienceCheck()
+	{
+		if (GenderAudienceButtons[0].GetComponent<Toggle>().isOn)
+		{
+			return GenderAudience.MALE;
+		}
+		else if (GenderAudienceButtons[1].GetComponent<Toggle>().isOn)
+		{
+			return GenderAudience.EVERYONE;
+		}
+		else if (GenderAudienceButtons[2].GetComponent<Toggle>().isOn)
+		{
+			return GenderAudience.FEMALE;
+		}
+		else return GenderAudience.EVERYONE;
+	}
+	
+	PropertyRight PropertyRightCheck()
+	{
+		if (PropertyRightButtons[0].GetComponent<Toggle>().isOn)
+		{
+			return PropertyRight.SOLD_TO_ANOTHER_COMPANY;
+		}
+		else if (PropertyRightButtons[1].GetComponent<Toggle>().isOn)
+		{
+			return PropertyRight.BELONGS_TO_OUR_COMPANY;
+		}
+		else return PropertyRight.SOLD_TO_ANOTHER_COMPANY;
 	}
 
 	public void AskQuestion()
@@ -284,16 +387,16 @@ public class MainSceneController : MonoBehaviour
 	{
 		profitRatio = GetProfitRatio();
 		var income = 0;
-		if (PropertyRightButton1.GetComponent<Toggle>().isOn)
+		/*if (PropertyRightButtons[0].GetComponent<Toggle>().isOn)
 		{
-			products.Add(new Product(productName, profitRatio, creationCost, PropertyRights.SOLD_TO_ANOTHER_COMPANY));
+			products.Add(new Product(productName, profitRatio, creationCost, PropertyRight.SOLD_TO_ANOTHER_COMPANY));
 			income = (int)(creationCost * profitRatio);
 		}
-		else if (PropertyRightButton2.GetComponent<Toggle>().isOn)
+		else if (PropertyRightButtons[1].GetComponent<Toggle>().isOn)
 		{
-			products.Add(new Product(productName, profitRatio, creationCost, PropertyRights.BELONGS_TO_OUR_COMPANY));
+			products.Add(new Product(productName, profitRatio, creationCost, PropertyRight.BELONGS_TO_OUR_COMPANY));
 			income = (int)(creationCost * 0.2 * profitRatio);
-		}
+		}*/
 		SetScore(income);
 	}
 
@@ -372,22 +475,66 @@ public class Answer
 
 public class Product
 {
-	public string ProductName;
-	public double ProductProfitRatio;
-	public int ProductCost;
-	public PropertyRights PropertyRight;
+	public string productName;
+	public double productProfitRatio;
+	public int productCost;
+	
+	public ProjectSize projectSize;
+	public Specialization specialization;
+	public AgeAudience ageAudience;
+	public GenderAudience genderAudience;
+	public PropertyRight propertyRight;
 
-	public Product(string ProductName, double ProductProfitRatio, int ProductCost, PropertyRights PropertyRight)
+	public Product(string productName, 
+				   double productProfitRatio, 
+				   int productCost, 
+				   ProjectSize projectSize, 
+				   Specialization specialization, 
+				   AgeAudience ageAudience, 
+				   GenderAudience genderAudience, 
+				   PropertyRight propertyRight)
 	{
-		this.ProductName = ProductName;
-		this.ProductProfitRatio = ProductProfitRatio;
-		this.ProductCost = ProductCost;
-		this.PropertyRight = PropertyRight;
+		this.productName = productName;
+		this.productProfitRatio = productProfitRatio;
+		this.productCost = productCost;
+		
+		this.projectSize = projectSize;
+		this.specialization = specialization;
+		this.ageAudience = ageAudience;
+		this.genderAudience = genderAudience;
+		this.propertyRight = propertyRight;
 	}
 }
 
-public enum PropertyRights 
+public enum ProjectSize
+{
+	MINOR,
+	MAJOR
+}
+
+public enum Specialization
+{
+	GAME,
+	WEBSITE
+}
+
+public enum AgeAudience
+{
+	CHILDREN,
+	EVERYONE,
+	ADULT
+}
+
+public enum GenderAudience
+{
+	MALE,
+	EVERYONE,
+	FEMALE
+}
+
+public enum PropertyRight
 {
 	SOLD_TO_ANOTHER_COMPANY,
 	BELONGS_TO_OUR_COMPANY
 }
+

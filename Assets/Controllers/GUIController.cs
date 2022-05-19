@@ -17,4 +17,14 @@ public class GUIController : MonoBehaviour
 	{
 		SceneManager.LoadScene("MenuScene");
 	}
+	
+	public void OpenStatistic()
+	{
+		SceneManager.LoadScene("StatisticScene");
+	}
+	
+	public void OpenTree()
+	{
+		SceneManager.LoadScene("TreeScene");
+	}
 }

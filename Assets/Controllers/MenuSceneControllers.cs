@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuSceneControllers : MonoBehaviour
 {
-    private string sceneToOpen = "NameEnterScene";
+    private string sceneToOpen = "WelcomeScene";
 
     public void OpenScene()
     {
