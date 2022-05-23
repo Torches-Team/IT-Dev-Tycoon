@@ -548,7 +548,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "10000$ \u041E\u041E"
+  m_text: "10000 \u041E\u041E"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 277cf7b7f3e63524696e99e875e4f29a, type: 2}
   m_sharedMaterial: {fileID: 7422770814429823164, guid: 277cf7b7f3e63524696e99e875e4f29a, type: 2}
@@ -575,8 +575,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1916,7 +1916,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "10000$ \u041E\u041E"
+  m_text: "10000 \u041E\u041E"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 277cf7b7f3e63524696e99e875e4f29a, type: 2}
   m_sharedMaterial: {fileID: 7422770814429823164, guid: 277cf7b7f3e63524696e99e875e4f29a, type: 2}
@@ -1943,8 +1943,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2562,7 +2562,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 514373701}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3559,7 +3559,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "10000$ \u041E\u041E"
+  m_text: "10000 \u041E\u041E"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 277cf7b7f3e63524696e99e875e4f29a, type: 2}
   m_sharedMaterial: {fileID: 7422770814429823164, guid: 277cf7b7f3e63524696e99e875e4f29a, type: 2}
@@ -3586,8 +3586,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4692,7 +4692,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "10000$ \u041E\u041E"
+  m_text: "10000 \u041E\u041E"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 277cf7b7f3e63524696e99e875e4f29a, type: 2}
   m_sharedMaterial: {fileID: 7422770814429823164, guid: 277cf7b7f3e63524696e99e875e4f29a, type: 2}
@@ -4719,8 +4719,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6028,7 +6028,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "10000$ \u041E\u041E"
+  m_text: "10000 \u041E\u041E"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 277cf7b7f3e63524696e99e875e4f29a, type: 2}
   m_sharedMaterial: {fileID: 7422770814429823164, guid: 277cf7b7f3e63524696e99e875e4f29a, type: 2}
@@ -6055,8 +6055,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6163,7 +6163,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "10000$ \u041E\u041E"
+  m_text: "10000 \u041E\u041E"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 277cf7b7f3e63524696e99e875e4f29a, type: 2}
   m_sharedMaterial: {fileID: 7422770814429823164, guid: 277cf7b7f3e63524696e99e875e4f29a, type: 2}
@@ -6190,8 +6190,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6375,7 +6375,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "10000$ \u041E\u041E"
+  m_text: "10000 \u041E\u041E"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 277cf7b7f3e63524696e99e875e4f29a, type: 2}
   m_sharedMaterial: {fileID: 7422770814429823164, guid: 277cf7b7f3e63524696e99e875e4f29a, type: 2}
@@ -6402,8 +6402,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -7476,7 +7476,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "10000$ \u041E\u041E"
+  m_text: "10000 \u041E\u041E"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 277cf7b7f3e63524696e99e875e4f29a, type: 2}
   m_sharedMaterial: {fileID: 7422770814429823164, guid: 277cf7b7f3e63524696e99e875e4f29a, type: 2}
@@ -7503,8 +7503,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -8307,7 +8307,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "10000$ \u041E\u041E"
+  m_text: "10000 \u041E\u041E"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 277cf7b7f3e63524696e99e875e4f29a, type: 2}
   m_sharedMaterial: {fileID: 7422770814429823164, guid: 277cf7b7f3e63524696e99e875e4f29a, type: 2}
@@ -8334,8 +8334,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -8433,8 +8433,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb6e2336121f3c944b63f6cc86329b07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moneyScoreText: {fileID: 807854502}
-  experienceScoreText: {fileID: 1832688876}
+  moneyScore: 1000000
+  experienceScore: 100000
+  year: 0
+  month: 0
+  week: 0
+  dateText: {fileID: 531490337}
+  moneyScoreText: {fileID: 807854504}
+  experienceScoreText: {fileID: 1832688878}
+  buttonTextList:
+  - {fileID: 1416881345}
+  - {fileID: 1877562993}
+  - {fileID: 1923768365}
+  - {fileID: 60078095}
+  - {fileID: 1442640408}
+  - {fileID: 1418111928}
+  - {fileID: 927592080}
+  - {fileID: 2029695408}
+  - {fileID: 1002812414}
+  - {fileID: 308137063}
+  moneyScoreList:
+  - {fileID: 333716417}
+  - {fileID: 1634264054}
+  - {fileID: 1060615183}
+  - {fileID: 16299017}
+  - {fileID: 616054093}
+  - {fileID: 134484813}
+  - {fileID: 434520057}
+  - {fileID: 1220583677}
+  - {fileID: 969406660}
+  - {fileID: 764778842}
+  experienceScoreList:
+  - {fileID: 1224859961}
+  - {fileID: 1232714534}
+  - {fileID: 338036280}
+  - {fileID: 1551879290}
+  - {fileID: 980198581}
+  - {fileID: 752204172}
+  - {fileID: 32535682}
+  - {fileID: 1896622368}
+  - {fileID: 1221218118}
+  - {fileID: 1431573125}
   researchButton: {fileID: 500494239}
   buttons:
   - {fileID: 2143362554}
@@ -8447,11 +8486,6 @@ MonoBehaviour:
   - {fileID: 1514243359}
   - {fileID: 1669640155}
   - {fileID: 524221446}
-  moneyScore: 100000
-  experienceScore: 10000
-  year: 0
-  month: 0
-  week: 0
 --- !u!1 &1634264052
 GameObject:
   m_ObjectHideFlags: 0
@@ -10188,7 +10222,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "10000$ \u041E\u041E"
+  m_text: "10000 \u041E\u041E"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 277cf7b7f3e63524696e99e875e4f29a, type: 2}
   m_sharedMaterial: {fileID: 7422770814429823164, guid: 277cf7b7f3e63524696e99e875e4f29a, type: 2}
@@ -10215,8 +10249,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
