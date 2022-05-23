@@ -24,27 +24,25 @@ public class MainSceneController : MonoBehaviour
 	public GameObject QuestionTextPanel; //Текст вопроса
 	public GameObject AnswerText1Panel; //Текст ответа 1
 	public GameObject AnswerText2Panel; //Текст ответа 2
-	public GameObject AnswerButton1; //Кнопка ответа 1
-	public GameObject AnswerButton2; //Кнопка ответа 2
-	//public GameObject PropertyRightButton1;
-	//public GameObject PropertyRightButton2; 
 	public GameObject Release; //Панель выпуска продукта
 	public GameObject WinGamePanel; //Панель победы
 	public GameObject LoseGamePanel; //Панель поражения
 	public GameObject InputProductName; //Ввод названия продукта
 	public GameObject DarkBackground; //Затемнение фона
+	public GameObject ProjectSizeText;
+	public GameObject AgeText;
+	public GameObject GenderText;
 	
-	
+	public List<GameObject> BottomIcons;
+	public List<Button> AnswerButtons;
 	public GameObject[] ProjectSizeButtons;
 	public GameObject[] SpecializationButtons;
 	public GameObject[] AgeAudienceButtons;
 	public GameObject[] GenderAudienceButtons;
 	public GameObject[] PropertyRightButtons;
-	
 	public GameObject[] Cells;
 	public GameObject[] Grades;
 	
-
 	//public PropertyRight propertyRight;
 	//public Specialization specialization;
 
@@ -59,8 +57,8 @@ public class MainSceneController : MonoBehaviour
 	static int losingScore = -50000;
 	
 	//Переменные продукта
-	static int creationCost = 25000; //Стоимость создания нового продукта
-	static int questionsCount = 5; //Кол-во вопросов задаваемых при создании продукта
+	static int creationCost; //Стоимость создания нового продукта
+	static int questionsCount; //Кол-во вопросов задаваемых при создании продукта
 	static int questionNumber = 0; //Номер вопроса, задаваемого в данный момент
 	
 	//Переменные игрока 
@@ -87,11 +85,28 @@ public class MainSceneController : MonoBehaviour
 	double profitRatio;
 	double profit1;
 	double profit2;
+	
+	public Sprite Icon;
+	public Sprite Plus;
+	public Sprite Minus;
+	public Sprite Children;
+	public Sprite EveryAge;
+	public Sprite Adult;
+	public Sprite Men;
+	public Sprite EveryGender;
+	public Sprite Women;
 
 	void Start()
 	{
 		SetDate();
 		SetScore(0);
+		AnswerButtons[0].onClick.AddListener(() => ReadAnswer(0));
+		AnswerButtons[1].onClick.AddListener(() => ReadAnswer(1));
+
+		
+		//script = GetComponent<StatisticController>();
+		//script.AddNewProduct();
+		
 		questions.Add(new Question("Мы создаем новое меню для пользовательского интерфейса, на что стоит уделить большее внимание?", "Красота", "Фукционал", 0.85, 1.15));
 		questions.Add(new Question("Для разработки продукта в коллектив требуются новые люди. Какой уровень будущих сотрудников будет приемлемым?", "Студенты", "Специалисты", 0.9, 1.4));
 		questions.Add(new Question("Презентовать ли будущий продукт на выставке IT-отрасли?", "Да", "Нет", 1, 0.9));
@@ -147,7 +162,14 @@ public class MainSceneController : MonoBehaviour
 				timer += Time.deltaTime;
 			}
 		}
-		else DarkBackground.SetActive(true);
+		else 
+		{
+			AgeAudienceCheck();
+			GenderAudienceCheck();
+			ProjectSizeCheck();
+			CheckOnDisableButton();
+			DarkBackground.SetActive(true);
+		}
 	}
 	
 	void WeeklyEvents() //События, происходящие каждую новую неделю
@@ -187,7 +209,7 @@ public class MainSceneController : MonoBehaviour
 
 	void SetDate()
 	{
-		Date.GetComponent<TMPro.TextMeshProUGUI>().text = "Н: " + week + " М: " + month + " Г: " + year;
+		Date.GetComponent<TMPro.TextMeshProUGUI>().text = "Дата: Н: " + week + " М: " + month + " Г: " + year;
 	}
 
 	void SetScore(int deltaScore)
@@ -208,7 +230,8 @@ public class MainSceneController : MonoBehaviour
 			LoseGame();
 		}
 		
-		Score.GetComponent<TMPro.TextMeshProUGUI>().text = moneyScore + "$";
+		if (moneyScore >= 100000) Score.GetComponent<TMPro.TextMeshProUGUI>().text = moneyScore / 1000 + "." + moneyScore % 1000 + "$";
+		else Score.GetComponent<TMPro.TextMeshProUGUI>().text = moneyScore + "$";
 	}
 	
 	void IOCheck()
@@ -218,24 +241,7 @@ public class MainSceneController : MonoBehaviour
 			ContextMenu.transform.position = Input.mousePosition;
 			ContextMenu.SetActive(!ContextMenu.activeSelf);
 		}
-	}
-
-	/*public void StartNewGame()
-	{
-		questions = new List<Question>();
-		answers = new List<Answer>();
-		products = new List<Product>();
-		year = 1;
-		month = 1;
-		week = 1;
-		day = 1;
-		timer = 0;
-		askedQuestionCount = 0;
-		moneyScore = 50000;
-		monthlyExpenses = 4000;
-		experienceScore = 0;
-	}*/
-	
+	}	
 	
 	public void CreateNewProduct()
 	{
@@ -246,8 +252,6 @@ public class MainSceneController : MonoBehaviour
 		ResetBottomPanel();
 		
 		ProjectSize projectSize = ProjectSizeCheck();
-		productCost = projectSize == ProjectSize.MINOR ? 25000 : 200000;
-		
 		Specialization specialization = SpecializationCheck();
 		AgeAudience ageAudience = AgeAudienceCheck();
 		GenderAudience genderAudience = GenderAudienceCheck();
@@ -268,10 +272,17 @@ public class MainSceneController : MonoBehaviour
 	{
 		if (ProjectSizeButtons[0].GetComponent<Toggle>().isOn)
 		{
+			HideGrades();
+			ProjectSizeText.GetComponent<TMPro.TextMeshProUGUI>().text = "Стоимость разработки: 25К";
+			creationCost = 25000;
+			questionsCount = 3;
 			return ProjectSize.MINOR;
 		}
 		else if (ProjectSizeButtons[1].GetComponent<Toggle>().isOn)
 		{
+			ProjectSizeText.GetComponent<TMPro.TextMeshProUGUI>().text = "Стоимость разработки: 200К";
+			creationCost = 200000;
+			questionNumber = 5;
 			return ProjectSize.MAJOR;
 		}
 		else return ProjectSize.MINOR;
@@ -294,14 +305,20 @@ public class MainSceneController : MonoBehaviour
 	{
 		if (AgeAudienceButtons[0].GetComponent<Toggle>().isOn)
 		{
+			AgeText.GetComponent<TMPro.TextMeshProUGUI>().text = "Возраст: Дети";
+			BottomIcons[1].GetComponent<Image>().sprite = Children;
 			return AgeAudience.CHILDREN;
 		}
 		else if (AgeAudienceButtons[1].GetComponent<Toggle>().isOn)
 		{
+			AgeText.GetComponent<TMPro.TextMeshProUGUI>().text = "Возраст: Все";
+			BottomIcons[1].GetComponent<Image>().sprite = EveryAge;
 			return AgeAudience.EVERYONE;
 		}
 		else if (AgeAudienceButtons[2].GetComponent<Toggle>().isOn)
 		{
+			AgeText.GetComponent<TMPro.TextMeshProUGUI>().text = "Возраст: Взрослые";
+			BottomIcons[1].GetComponent<Image>().sprite = Adult;
 			return AgeAudience.ADULT;
 		}
 		else return AgeAudience.EVERYONE;
@@ -311,14 +328,20 @@ public class MainSceneController : MonoBehaviour
 	{
 		if (GenderAudienceButtons[0].GetComponent<Toggle>().isOn)
 		{
+			GenderText.GetComponent<TMPro.TextMeshProUGUI>().text = "Пол: Мужчины";
+			BottomIcons[0].GetComponent<Image>().sprite = Men;
 			return GenderAudience.MALE;
 		}
 		else if (GenderAudienceButtons[1].GetComponent<Toggle>().isOn)
 		{
+			GenderText.GetComponent<TMPro.TextMeshProUGUI>().text = "Пол: Все";
+			BottomIcons[0].GetComponent<Image>().sprite = EveryGender;
 			return GenderAudience.EVERYONE;
 		}
 		else if (GenderAudienceButtons[2].GetComponent<Toggle>().isOn)
 		{
+			GenderText.GetComponent<TMPro.TextMeshProUGUI>().text = "Пол: Женщины";
+			BottomIcons[0].GetComponent<Image>().sprite = Women;
 			return GenderAudience.FEMALE;
 		}
 		else return GenderAudience.EVERYONE;
@@ -354,21 +377,23 @@ public class MainSceneController : MonoBehaviour
 		QuestionPanel.SetActive(true);
 	}
 
-	public void ReadAnswer()
-	{
-		MarkDoneQuestion(askedQuestionCount - 1);
-		
-		if (AnswerButton1.GetComponent<Toggle>().isOn)
+	public void ReadAnswer(int option)
+	{	
+		if (option == 0)
 		{
 			answers.Add(new Answer(QuestionTextPanel.GetComponent<TMPro.TextMeshProUGUI>().text,
 				AnswerText1Panel.GetComponent<TMPro.TextMeshProUGUI>().text, profit1));
+				Debug.Log("First Button");
 		}
-		else if (AnswerButton2.GetComponent<Toggle>().isOn)
+		else if (option == 1)
 		{
 			answers.Add(new Answer(QuestionTextPanel.GetComponent<TMPro.TextMeshProUGUI>().text,
 				AnswerText2Panel.GetComponent<TMPro.TextMeshProUGUI>().text, profit2));
+				Debug.Log("Second Button");
 		}
-
+		Debug.Log(answers.Count);
+		MarkDoneQuestion(askedQuestionCount - 1);
+		
 		if (askedQuestionCount >= questionsCount)
 		{
 			askNewQuestionFlag = false;
@@ -387,16 +412,16 @@ public class MainSceneController : MonoBehaviour
 	{
 		profitRatio = GetProfitRatio();
 		var income = 0;
-		/*if (PropertyRightButtons[0].GetComponent<Toggle>().isOn)
+		if (PropertyRightButtons[0].GetComponent<Toggle>().isOn)
 		{
-			products.Add(new Product(productName, profitRatio, creationCost, PropertyRight.SOLD_TO_ANOTHER_COMPANY));
+			//products.Add(new Product(productName, profitRatio, creationCost, PropertyRight.SOLD_TO_ANOTHER_COMPANY));
 			income = (int)(creationCost * profitRatio);
 		}
 		else if (PropertyRightButtons[1].GetComponent<Toggle>().isOn)
 		{
-			products.Add(new Product(productName, profitRatio, creationCost, PropertyRight.BELONGS_TO_OUR_COMPANY));
+			//roducts.Add(new Product(productName, profitRatio, creationCost, PropertyRight.BELONGS_TO_OUR_COMPANY));
 			income = (int)(creationCost * 0.2 * profitRatio);
-		}*/
+		}
 		SetScore(income);
 	}
 
@@ -409,6 +434,11 @@ public class MainSceneController : MonoBehaviour
 		}
 		answers.Clear();
 		return k;
+	}
+	
+	void CheckOnDisableButton()
+	{
+		if(moneyScore < 150000) ProjectSizeButtons[1].GetComponent<Toggle>().interactable = false;
 	}
 
 	void WinGame()
@@ -429,6 +459,16 @@ public class MainSceneController : MonoBehaviour
 	void MarkDoneQuestion(int questionNumber)
 	{
 		Cells[questionNumber].GetComponent<Image>().color = new Color32(60, 200, 60, 255);
+		if(answers[questionNumber].AnswerProfitRatio < 1) Grades[questionNumber].GetComponent<Image>().sprite = Minus;
+		else if(answers[questionNumber].AnswerProfitRatio >= 1) Grades[questionNumber].GetComponent<Image>().sprite = Plus;
+	}
+	
+	void HideGrades()
+	{
+		Cells[3].GetComponent<Image>().color = new Color32(100, 100, 100, 255);
+		Cells[4].GetComponent<Image>().color = new Color32(100, 100, 100, 255);
+		Grades[3].GetComponent<Image>().color = new Color32(100, 100, 100, 255);
+		Grades[4].GetComponent<Image>().color = new Color32(100, 100, 100, 255);
 	}
 	
 	void ResetBottomPanel()
@@ -436,6 +476,10 @@ public class MainSceneController : MonoBehaviour
 		foreach (var cell in Cells)
 		{
 			cell.GetComponent<Image>().color = new Color32(204, 204, 204, 255);
+		}
+		foreach (var grade in Grades)
+		{
+			grade.GetComponent<Image>().sprite = Icon;
 		}
 		questionNumber = 0;
 	}
