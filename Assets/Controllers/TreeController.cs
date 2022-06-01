@@ -6,27 +6,11 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class TreeController : MonoBehaviour
-{
-	//Общие переменные
-	public int moneyScore;
-	public int experienceScore;
-	public int year;
-	public int month;
-	public int week;
-	
-	//Текст интерфейса
-	public TMPro.TextMeshProUGUI dateText;
-	public TMPro.TextMeshProUGUI moneyScoreText;
-	public TMPro.TextMeshProUGUI experienceScoreText;
-	public List<TMPro.TextMeshProUGUI> buttonTextList;
-	public List<TMPro.TextMeshProUGUI> moneyScoreList;
-	public List<TMPro.TextMeshProUGUI> experienceScoreList;
-	
+{		
 	//Основные элементы
 	public Button researchButton;
 	public List<Button> buttons;
 	public List<Technology> techs;
-	public List<Technology> researchedTechs;
 	
 	//Переменные элементы
 	Technology currentTech;
@@ -43,34 +27,61 @@ public class TreeController : MonoBehaviour
 		buttons[7].onClick.AddListener(() => PressButton(7));
 		buttons[8].onClick.AddListener(() => PressButton(8));
 		buttons[9].onClick.AddListener(() => PressButton(9));
+		buttons[10].onClick.AddListener(() => PressButton(10));
+		buttons[11].onClick.AddListener(() => PressButton(11));
+		buttons[12].onClick.AddListener(() => PressButton(12));
+		buttons[13].onClick.AddListener(() => PressButton(13));
+		buttons[14].onClick.AddListener(() => PressButton(14));
+		buttons[15].onClick.AddListener(() => PressButton(15));
+		buttons[16].onClick.AddListener(() => PressButton(16));
+		buttons[17].onClick.AddListener(() => PressButton(17));
+		buttons[18].onClick.AddListener(() => PressButton(18));
+		buttons[19].onClick.AddListener(() => PressButton(19));
+		buttons[20].onClick.AddListener(() => PressButton(20));
+		buttons[21].onClick.AddListener(() => PressButton(21));
+		buttons[22].onClick.AddListener(() => PressButton(22));
+		buttons[23].onClick.AddListener(() => PressButton(23));
+		buttons[24].onClick.AddListener(() => PressButton(24));
+		buttons[25].onClick.AddListener(() => PressButton(25));
+		buttons[26].onClick.AddListener(() => PressButton(26));
 		
-		techs = new List<Technology>();
-		researchedTechs = new List<Technology>();
-		techs.Add(new Technology("First", 1000, 100, TechState.AVAILABLE, null, new List<int>() {1} )); //0
-		techs.Add(new Technology("Second", 10000, 150, TechState.CLOSED, techs[0], new List<int>() {2,3,4} )); //1
-		techs.Add(new Technology("Third", 25000, 200, TechState.CLOSED, techs[1], new List<int>() {5,6} )); //2
-		techs.Add(new Technology("Fourth", 30000, 150, TechState.CLOSED, techs[1], null)); //3 
-		techs.Add(new Technology("Fifth", 35000, 100, TechState.CLOSED, techs[1], new List<int>() {7} )); //4
-		techs.Add(new Technology("Sixth", 50000, 350, TechState.CLOSED, techs[2], new List<int>() {9} )); //5
-		techs.Add(new Technology("Seventh", 20000, 250, TechState.CLOSED, techs[2], null)); //6
-		techs.Add(new Technology("Eights", 50000, 500, TechState.CLOSED, techs[4], new List<int>() {8} )); //7
-		techs.Add(new Technology("Nineth", 10000, 100, TechState.CLOSED, techs[7], null)); //8
-		techs.Add(new Technology("Nddineth", 100000, 1000, TechState.CLOSED, techs[5], null)); //9
-		
-		for(int i = 0; i < buttons.Count; i++)
-		{
-			buttonTextList[i].GetComponent<TMPro.TextMeshProUGUI>().text = techs[i].title;
-			moneyScoreList[i].GetComponent<TMPro.TextMeshProUGUI>().text = techs[i].moneyCost + "$";
-			experienceScoreList[i].GetComponent<TMPro.TextMeshProUGUI>().text = techs[i].experienceCost + " ОО";
-		}
-		CheckButtons();
+		techs = GlobalController.Instance.gameTechs;
+		ResetTree();
 		SetScore(0, 0);
-		SetDate();
 	}
 	
 	public void Update()
 	{
 
+	}
+	
+	public void ChangeSpecializationToGame()
+	{
+		techs = GlobalController.Instance.gameTechs;
+		ResetTree();
+	}
+	
+	public void ChangeSpecializationToWebsite()
+	{
+		techs = GlobalController.Instance.websiteTechs;
+		ResetTree();
+	}
+	
+	public void ResetTree()
+	{
+		for(int i = 0; i < buttons.Count; i++)
+		{
+			var header = buttons[i].transform.Find("Header");
+			var body = buttons[i].transform.Find("Panel");
+			var title = header.transform.Find("Text (TMP)");
+			var money = body.transform.Find("Text (TMP)");
+			var experience = body.transform.Find("Text (TMP) (1)");
+			
+			title.GetComponent<TMPro.TextMeshProUGUI>().text = techs[i].title;
+			money.GetComponent<TMPro.TextMeshProUGUI>().text = techs[i].moneyCost + "$";
+			experience.GetComponent<TMPro.TextMeshProUGUI>().text = techs[i].experienceCost + " ОО";
+		}
+		CheckButtons();
 	}
 	
 	public void CheckButtons()
@@ -85,6 +96,7 @@ public class TreeController : MonoBehaviour
 			{
 				buttons[i].interactable = true;
 			}
+			else buttons[i].interactable = true;
 		}
 	}
 	
@@ -112,58 +124,24 @@ public class TreeController : MonoBehaviour
 	
 	public void ResearchNewTech()
 	{
-		if (currentTech.state == TechState.AVAILABLE && currentTech.moneyCost < moneyScore && currentTech.experienceCost < experienceScore)
+		if (currentTech.state == TechState.AVAILABLE && currentTech.moneyCost < GlobalController.Instance.moneyScore && currentTech.experienceCost < GlobalController.Instance.experienceScore)
 		{
 			currentTech.state = TechState.RESEARCHED;
+			GlobalController.Instance.researchedTechs.Add(currentTech);
 			SetScore(currentTech.moneyCost, currentTech.experienceCost);
-			researchedTechs.Add(currentTech);
-			researchButton.interactable = false;
 			CheckResearch();
+			researchButton.interactable = false;
 		}
 	}
 	
 	void SetScore(int moneyCost, int experienceCost)
 	{
-		moneyScore -= moneyCost;
-		experienceScore -= experienceCost;
-		moneyScoreText.text = moneyScore + "$";
-		experienceScoreText.text = experienceScore + " ОО";
-	}
-	
-	void SetDate()
-	{
-		dateText.text = "Н: " + week + " М: " + month + " Г: " + year; 
+		GlobalController.Instance.moneyScore -= moneyCost;
+		GlobalController.Instance.experienceScore -= experienceCost;
 	}
 	
     public void BackToMain()
 	{
 		SceneManager.LoadScene("MainScene");
 	}
-}
-
-public class Technology
-{
-	public string title;
-	public int moneyCost;
-	public int experienceCost;
-	public TechState state;
-	public Technology previous;
-	public List<int> next;
-
-	public Technology(string title, int moneyCost, int experienceCost, TechState state, Technology previous, List<int> next)
-	{
-		this.title = title;
-		this.moneyCost = moneyCost;
-		this.experienceCost = experienceCost;
-		this.state = state;
-		this.previous = previous;
-		this.next = next;
-	}
-}
-
-public enum TechState
-{
-	RESEARCHED,
-	AVAILABLE,
-	CLOSED
 }

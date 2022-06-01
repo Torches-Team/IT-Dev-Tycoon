@@ -1,30 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GUIController : MonoBehaviour
 {
-    public GameObject ProductNameText;
-	public GameObject InputProductName;
+    public TMPro.TextMeshProUGUI ProductNameText;
+	public TMPro.TextMeshProUGUI InputProductName;
+	public Animator GUIAnimator;
+	public Animator ContextPanelAnimator;
+	public List<Button> buttons;
+	
+	void Start()
+	{
+		buttons[0].onClick.AddListener(() => OpenScene("MenuScene"));
+		buttons[1].onClick.AddListener(() => OpenScene("TreeScene"));
+		buttons[2].onClick.AddListener(() => OpenScene("StatisticScene"));
+	}
 
     public void SetProductName()
 	{
-		ProductNameText.GetComponent<TMPro.TextMeshProUGUI>().text = InputProductName.GetComponent<TMPro.TextMeshProUGUI>().text;
+		ProductNameText.text = InputProductName.text;
 	}
 	
-	public void BackToMenu()
+	public void OpenScene(string sceneName)
 	{
-		SceneManager.LoadScene("MenuScene");
+		SceneManager.LoadScene(sceneName);
 	}
 	
-	public void OpenStatistic()
+	public void OpenPanel()
 	{
-		SceneManager.LoadScene("StatisticScene");
+		if(GUIAnimator != null)
+		{
+			var isOpen = GUIAnimator.GetBool("Open");
+			
+			GUIAnimator.SetBool("Open", !isOpen);
+		}
 	}
 	
-	public void OpenTree()
+	public void ShowContextMenu()
 	{
-		SceneManager.LoadScene("TreeScene");
+		if(ContextPanelAnimator != null)
+		{
+			var isShow = ContextPanelAnimator.GetBool("Show");
+			
+			ContextPanelAnimator.SetBool("Show", !isShow);
+		}
 	}
 }
