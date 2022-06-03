@@ -16,7 +16,7 @@ public class GlobalController : MonoBehaviour
 	public bool flag;
 	public List<Credit> credits;
 	public List<Product> products;
-	public List<Product> demanded;
+	public List<DemandedProduct> demanded;
 	public List<Technology> gameTechs;
 	public List<Technology> websiteTechs;
 	public List<Technology> researchedTechs;
@@ -43,7 +43,7 @@ public class GlobalController : MonoBehaviour
 		flag = false;
 		credits = new List<Credit>();
 		products = new List<Product>();
-		demanded = new List<Product>();
+		demanded = new List<DemandedProduct>();
 		gameTechs = new List<Technology>();
 		websiteTechs = new List<Technology>();
 		researchedTechs = new List<Technology>();
@@ -146,6 +146,17 @@ public class GlobalController : MonoBehaviour
 		credits.Add(new Credit(CREDIT_SIZE.SMALL, false, 50000, 4560, 12));
 		credits.Add(new Credit(CREDIT_SIZE.MEDIUM, false, 125000, 11460, 12));
 		credits.Add(new Credit(CREDIT_SIZE.BIG, false, 250000, 22920, 12));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.SPORT, AgeAudience.CHILDREN, GenderAudience.MALE, new List<Technology>(){websiteTechs[0], websiteTechs[3]}));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.SCIENCE, AgeAudience.CHILDREN, GenderAudience.MALE, new List<Technology>(){gameTechs[3]}));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.FASHION, AgeAudience.EVERYONE, GenderAudience.FEMALE, new List<Technology>(){websiteTechs[0], websiteTechs[5]}));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.WEATHER, AgeAudience.EVERYONE, GenderAudience.FEMALE, new List<Technology>(){gameTechs[3]}));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.SPACE, AgeAudience.ADULT, GenderAudience.MALE, new List<Technology>(){websiteTechs[0], websiteTechs[2]}));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.MUSIC, AgeAudience.ADULT, GenderAudience.FEMALE, new List<Technology>(){gameTechs[3]}));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.MUSIC, AgeAudience.EVERYONE, GenderAudience.MALE, new List<Technology>(){websiteTechs[0], websiteTechs[1]}));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.LOVE, AgeAudience.EVERYONE, GenderAudience.FEMALE, new List<Technology>(){gameTechs[3]}));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.LOVE, AgeAudience.ADULT, GenderAudience.FEMALE, new List<Technology>(){websiteTechs[3], websiteTechs[4]}));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.SCHOOL, AgeAudience.ADULT, GenderAudience.MALE, new List<Technology>(){gameTechs[3]}));
 	}
 }
 
@@ -157,6 +168,7 @@ public class Product
 
 	public ProjectSize projectSize;
 	public Specialization specialization;
+	public Theme theme;
 	public AgeAudience ageAudience;
 	public GenderAudience genderAudience;
 	public PropertyRight propertyRight;
@@ -168,6 +180,7 @@ public class Product
 				double productProfitRatio, 
 				int productCost, 
 				ProjectSize projectSize, 
+				Theme theme,
 				Specialization specialization, 
 				AgeAudience ageAudience, 
 				GenderAudience genderAudience, 
@@ -181,6 +194,7 @@ public class Product
 	
 		this.projectSize = projectSize;
 		this.specialization = specialization;
+		this.theme = theme;
 		this.ageAudience = ageAudience;
 		this.genderAudience = genderAudience;
 		this.propertyRight = propertyRight;
@@ -194,17 +208,19 @@ public class DemandedProduct
 {
 	public ProjectSize projectSize;
 	public Specialization specialization;
+	public Theme theme;
 	public AgeAudience ageAudience;
 	public GenderAudience genderAudience;
-	//public List<Technology> usedTechs;
+	public List<Technology> usedTechs;
 
-	public DemandedProduct(ProjectSize projectSize, Specialization specialization, AgeAudience ageAudience, GenderAudience genderAudience /*List<Technology> usedTechs*/)
+	public DemandedProduct(ProjectSize projectSize, Specialization specialization, Theme theme, AgeAudience ageAudience, GenderAudience genderAudience, List<Technology> usedTechs)
 	{
 		this.projectSize = projectSize;
 		this.specialization = specialization;
+		this.theme = theme;
 		this.ageAudience = ageAudience;
 		this.genderAudience = genderAudience;
-		//this.usedTechs = usedTechs;
+		this.usedTechs = usedTechs;
 	}
 }
 
@@ -293,6 +309,18 @@ public enum Specialization
 	GAME,
 	WEBSITE
 }
+
+public enum Theme
+{
+	SPORT,
+	MUSIC,
+	LOVE,
+	FASHION,
+	SCHOOL,
+	SCIENCE,
+	SPACE,
+	WEATHER
+}	
 
 public enum AgeAudience
 {

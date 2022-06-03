@@ -4,38 +4,34 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AnalytiscController : MonoBehaviour
+public class AnalyticsController : MonoBehaviour
 {
+	public MainSceneController mainSceneController;
 	public List<DemandedProduct> fullListOfDemandedProducts;
 	public List<DemandedProduct> demandedProducts;
+	public List<Technology> gameTechs;
+	public List<Technology> websiteTechs;
 	public List<Button> buttons;
 	public TMPro.TextMeshProUGUI descriptionText;
 	public Dictionary<ProjectSize, string> ProjectSizeDict;
 	public Dictionary<Specialization, string> SpecializationDict;
 	public Dictionary<AgeAudience, string> AgeAudienceDict;
 	public Dictionary<GenderAudience, string> GenderAudienceDict;
+	public DemandedProduct newProduct;
 	public int activeId;
 	
-	void Awake()
+	public void Awake()
 	{
-		demandedProducts = new List<DemandedProduct>();
 		fullListOfDemandedProducts = new List<DemandedProduct>();
+		demandedProducts = new List<DemandedProduct>();
+		
+		gameTechs = GlobalController.Instance.gameTechs;
+		websiteTechs = GlobalController.Instance.websiteTechs;
 
 		ProjectSizeDict = new Dictionary<ProjectSize, string>();
 		SpecializationDict = new Dictionary<Specialization, string>();
 		AgeAudienceDict = new Dictionary<AgeAudience, string>();
 		GenderAudienceDict = new Dictionary<GenderAudience, string>();
-		
-		fullListOfDemandedProducts.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, AgeAudience.CHILDREN, GenderAudience.MALE));
-		fullListOfDemandedProducts.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, AgeAudience.CHILDREN, GenderAudience.MALE));
-		fullListOfDemandedProducts.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, AgeAudience.EVERYONE, GenderAudience.FEMALE));
-		fullListOfDemandedProducts.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, AgeAudience.EVERYONE, GenderAudience.FEMALE));
-		fullListOfDemandedProducts.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, AgeAudience.ADULT, GenderAudience.MALE));
-		fullListOfDemandedProducts.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, AgeAudience.ADULT, GenderAudience.FEMALE));
-		fullListOfDemandedProducts.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, AgeAudience.EVERYONE, GenderAudience.MALE));
-		fullListOfDemandedProducts.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, AgeAudience.EVERYONE, GenderAudience.FEMALE));
-		fullListOfDemandedProducts.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, AgeAudience.ADULT, GenderAudience.FEMALE));
-		fullListOfDemandedProducts.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, AgeAudience.ADULT, GenderAudience.MALE));
 
 		ProjectSizeDict.Add(ProjectSize.MINOR, "Маленький");
 		ProjectSizeDict.Add(ProjectSize.MAJOR, "Большой");
@@ -55,10 +51,12 @@ public class AnalytiscController : MonoBehaviour
     void Start()
     {
 		buttons[0].onClick.AddListener(() => ShowAnotherProduct(-1));
+		buttons[1].onClick.AddListener(() => mainSceneController.CreateDemandedProduct(newProduct));
 		buttons[2].onClick.AddListener(() => ShowAnotherProduct(1));
 		
         demandedProducts = GetNewDemandedProducts();
 		activeId = 1;
+		newProduct = demandedProducts[activeId];
 
 		ShowAnotherProduct(0);
     }
@@ -78,16 +76,27 @@ public class AnalytiscController : MonoBehaviour
 		
 		if (activeId == demandedProducts.Count - 1) buttons[2].interactable = false;
 		else buttons[2].interactable = true;
+		
+		newProduct = demandedProducts[activeId];
 	}
 	
 	string ParseProductToText(DemandedProduct product)
 	{
 		var str = 
-		"Размер проекта: " + ProjectSizeDict[product.projectSize] + 
-		"\n Специализация: " + SpecializationDict[product.specialization] + 
-		"\n Возраст: " + AgeAudienceDict[product.ageAudience] + 
-		"\n Пол: " + GenderAudienceDict[product.genderAudience];
-		return str;
+		" -Размер проекта: " + ProjectSizeDict[product.projectSize] + 
+		"\n -Специализация: " + SpecializationDict[product.specialization] + 
+		"\n -Возраст: " + AgeAudienceDict[product.ageAudience] + 
+		"\n -Пол: " + GenderAudienceDict[product.genderAudience] +
+		"\n -Технологии: \n";
+		var techsStr = "";
+		var flag = true;
+		foreach(var tech in product.usedTechs)
+		{
+			techsStr += flag ? " " : ", ";
+			if(flag) flag = false;
+			techsStr += tech.title;
+		}
+		return String.Concat(str + techsStr);
 	}
 	
 	public void GetNewProducts()
@@ -97,32 +106,19 @@ public class AnalytiscController : MonoBehaviour
 	
 	List<DemandedProduct> GetNewDemandedProducts()
 	{
+		Debug.Log("1");
 		var takenProducts = new List<DemandedProduct>();
 		var newDemandedProducts = new List<DemandedProduct>();
-		
-		var randomProduct = fullListOfDemandedProducts[new System.Random().Next(0, fullListOfDemandedProducts.Count)];
+		Debug.Log("2");
+		var randomProduct = GlobalController.Instance.demanded[new System.Random().Next(0, GlobalController.Instance.demanded.Count)];
+		Debug.Log("3");
 		for (int i = 0; i < 3; i++)
 		{
-			while(takenProducts.Contains(randomProduct)) randomProduct = fullListOfDemandedProducts[new System.Random().Next(0, fullListOfDemandedProducts.Count)];
+			while(takenProducts.Contains(randomProduct)) randomProduct = GlobalController.Instance.demanded[new System.Random().Next(0, GlobalController.Instance.demanded.Count)];
 			newDemandedProducts.Add(randomProduct);
 			takenProducts.Add(randomProduct);
+			Debug.Log("4");
 		}
 		return newDemandedProducts;
 	}
 }
-
-/*public class DemandedProduct
-{
-	public ProjectSize projectSize;
-	public Specialization specialization;
-	public AgeAudience ageAudience;
-	public GenderAudience genderAudience;
-
-	public DemandedProduct(ProjectSize projectSize, Specialization specialization, AgeAudience ageAudience, GenderAudience genderAudience)
-	{
-		this.projectSize = projectSize;
-		this.specialization = specialization;
-		this.ageAudience = ageAudience;
-		this.genderAudience = genderAudience;
-	}
-}*/
