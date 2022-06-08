@@ -41,7 +41,7 @@ public class StatisticController : MonoBehaviour
 		childObject.transform.SetParent(parentObject);
 		childObject.AddComponent<RectTransform>();
 		childObject.AddComponent<CanvasRenderer>();
-		childObject.AddComponent<Image>().color = new Color32(255, 138, 95, 255);
+		childObject.AddComponent<Image>().color = new Color32(255, 138, 95, 75);
 		var button = childObject.AddComponent<Button>();
 		var palette = button.colors;
 		palette.highlightedColor = new Color32(170, 170, 170, 255);
@@ -69,7 +69,7 @@ public class StatisticController : MonoBehaviour
 		var t = text.AddComponent<TMPro.TextMeshProUGUI>();
 		t.text = products[i].productName;
 		t.overflowMode = TextOverflowModes.Ellipsis;
-		t.fontSize = 42;
+		t.fontSize = 60;
 		t.color = new Color32(50,50,50,255);
 		t.alignment = TextAlignmentOptions.Center;
 	}

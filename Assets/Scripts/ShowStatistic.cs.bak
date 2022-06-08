@@ -11,7 +11,7 @@ public class ShowStatistic : MonoBehaviour
 	public string age;
 	public string gender;
 	public int income;
-	public int productCost;
+	public int expenses;
 	public int gainedExp;
 	
     void Awake()

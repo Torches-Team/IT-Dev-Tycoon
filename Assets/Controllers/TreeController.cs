@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class TreeController : MonoBehaviour
 {		
+	public MainSceneController mainSceneController;
 	//Основные элементы
 	public Button researchButton;
 	public List<Button> buttons;
@@ -14,6 +15,7 @@ public class TreeController : MonoBehaviour
 	
 	//Переменные элементы
 	Technology currentTech;
+	int c;
 	
 	public void Start()
 	{	
@@ -58,12 +60,14 @@ public class TreeController : MonoBehaviour
 	public void ChangeSpecializationToGame()
 	{
 		techs = GlobalController.Instance.gameTechs;
+		currentTech = techs[0];
 		ResetTree();
 	}
 	
 	public void ChangeSpecializationToWebsite()
 	{
 		techs = GlobalController.Instance.websiteTechs;
+		currentTech = techs[0];
 		ResetTree();
 	}
 	
@@ -116,8 +120,13 @@ public class TreeController : MonoBehaviour
 		{
 			foreach(int e in nexts)
 			{
-				techs[e].state = TechState.AVAILABLE;
+				if(techs[e].state != TechState.RESEARCHED) techs[e].state = TechState.AVAILABLE;
 			}
+		}
+		else
+		{
+			if(CountResearchedTechs(GlobalController.Instance.gameTechs) + CountResearchedTechs(GlobalController.Instance.websiteTechs) >= 5) 
+				GlobalController.Instance.gameWon = true;
 		}
 		CheckButtons();
 	}
@@ -132,6 +141,16 @@ public class TreeController : MonoBehaviour
 			CheckResearch();
 			researchButton.interactable = false;
 		}
+	}
+	
+	public int CountResearchedTechs(List<Technology> techsList)
+	{
+		c = 0;
+		foreach(var tech in techsList)
+		{
+			if(tech.state == TechState.RESEARCHED) c++;
+		}
+		return c;
 	}
 	
 	void SetScore(int moneyCost, int experienceCost)

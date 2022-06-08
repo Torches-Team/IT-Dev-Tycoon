@@ -66,7 +66,6 @@ public class MainSceneController : MonoBehaviour
 	public GameObject ProjectSizeText;
 	public GameObject AgeText;
 	public GameObject GenderText;
-	public Specialization specialization;
 	
 	public List<GameObject> BottomIcons;
 	public List<Button> AnswerButtons;
@@ -74,13 +73,18 @@ public class MainSceneController : MonoBehaviour
 	public List<GameObject> DarkSpeedButtons;
 	public List<GameObject> Backgrounds;
 	public List<Button> CreationButtons;
+	public List<GameObject> EducationPanels;
+
 	public GameObject[] ProjectSizeButtons;
 	public GameObject[] SpecializationButtons;
+	public GameObject[] ThemeButtons;
 	public GameObject[] AgeAudienceButtons;
 	public GameObject[] GenderAudienceButtons;
 	public GameObject[] PropertyRightButtons;
 	public GameObject[] Cells;
 	public GameObject[] Grades;
+	public Button CreateButton;
+	public Button AnalyticsButton;
 	
 	public Product product;
 
@@ -91,11 +95,9 @@ public class MainSceneController : MonoBehaviour
 	const int MaxWeek = 5; //Ограничитель счётчика недель
 	const int MaxMonth = 13; //Ограничитель счётчика месяцев
 
-	static int winningScore = 200000;
-	static int losingScore = -50000;
+	static int losingScore = -100000;
 	
 	//Переменные продукта
-	static int creationCost; //Стоимость создания нового продукта
 	static int questionsCount; //Кол-во вопросов задаваемых при создании продукта
 	static int questionNumber; //Номер вопроса, задаваемого в данный момент
 	
@@ -115,10 +117,12 @@ public class MainSceneController : MonoBehaviour
 	bool gameFinishedFlag = false;
 	bool created = false;
 	bool isDefaultExist = false;
+	List<bool> educationFlags;
 	
 	//Вспомогательные переменные
 	string productName;
-	int productCost;
+	int creationCost; //Стоимость создания нового продукта
+	double ratio = 1;
 	int askedQuestionCount = 0;
 	double profitRatio;
 	double expRatio;
@@ -185,6 +189,11 @@ public class MainSceneController : MonoBehaviour
 		websiteCreationStages.Add(2, Category.TEXT);
 		websiteCreationStages.Add(3, Category.DESIGN);
 		websiteCreationStages.Add(4, Category.MARKETING);
+		
+		/*for(int i = 0; i < )
+		{
+			educationFlags[i]
+		}*/
 		
 		analyticsController.Awake();
 		//analyticsController.Start();
@@ -281,6 +290,10 @@ public class MainSceneController : MonoBehaviour
 	
 	void WeeklyEvents() //События, происходящие каждую новую неделю
 	{		
+		if (GlobalController.Instance.gameWon)
+		{
+			WinGame();
+		}
 		if (releaseFlag)
 		{
 			AskQuestion();
@@ -291,25 +304,25 @@ public class MainSceneController : MonoBehaviour
 		if (askNewQuestionFlag)
 		{
 			//AskQuestion();
-			if(specialization == Specialization.WEBSITE)
+			if(product.specialization == Specialization.WEBSITE)
 			{
 				Debug.Log("Website");
 				AskTechnology(websiteCreationStages[askedQuestionCount], GlobalController.Instance.websiteTechs);
 			}
-			if(specialization == Specialization.GAME)
+			if(product.specialization == Specialization.GAME)
 			{
 				Debug.Log("Game");
 				AskTechnology(gameCreationStages[askedQuestionCount], GlobalController.Instance.gameTechs);
 			}
 			askNewQuestionFlag = false;					
 		}
-		
 		if(analyticsWeeks != 0)
 		{
 			analyticsWeeks++;
 			if(analyticsWeeks >= 4)
 			{
 				analyticsWeeks = 0;
+				AnalyticsButton.interactable = true;
 				AnalyticsPanel.SetActive(true);
 			}
 		}
@@ -352,18 +365,12 @@ public class MainSceneController : MonoBehaviour
 	{
 		GlobalController.Instance.moneyScore += deltaMoney;
 		GlobalController.Instance.experienceScore += deltaExperience;
-
-		/*if (GlobalController.Instance.moneyScore >= winningScore && !gameFinishedFlag)
-		{
-			gameFinishedFlag = true;
-			WinGame();
-		}
 		
 		if (GlobalController.Instance.moneyScore <= losingScore && !gameFinishedFlag)
 		{
 			gameFinishedFlag = true;
 			LoseGame();
-		}*/
+		}
 	}
 	
 	void IOCheck()
@@ -378,23 +385,24 @@ public class MainSceneController : MonoBehaviour
 	public void CreateNewProduct()
 	{
 		askNewQuestionFlag = true;
+		CreateButton.interactable = false;
 		
 		productName = InputProductName.GetComponent<TMP_InputField>().text;
 		BottomPanelName.GetComponent<TextMeshProUGUI>().text = productName;
 		ResetBottomPanel();
 		
 		ProjectSize projectSize = ProjectSizeCheck();
-		specialization = SpecializationCheck();
+		
+		Specialization specialization = SpecializationCheck();
 		Theme theme = ThemeCheck();
 		AgeAudience ageAudience = AgeAudienceCheck();
 		GenderAudience genderAudience = GenderAudienceCheck();
 		askedQuestions = new List<Question>();
-		productCost = 0;
 	
 		SetScore(-creationCost, 0);
 		product = new Product(productName,
-									  1,
-									  productCost,
+									  ratio,
+									  creationCost,
 									  projectSize,
 									  theme,
 									  specialization,
@@ -421,39 +429,41 @@ public class MainSceneController : MonoBehaviour
 		else questionsPool = generalQuestions.Concat(agePool.Concat(genderPool)).ToList();
 	}
 	
-	public void CreateDemandedProduct(DemandedProduct newProduct)
+	public void SetDemandedProduct(DemandedProduct newProduct)
 	{
-		askNewQuestionFlag = true;
-		
 		AnalyticsPanel.SetActive(false);
 		ResetBottomPanel();
 		
-		ProjectSize projectSize = newProduct.projectSize;
-		if(projectSize == ProjectSize.MINOR) ProjectSizeButtons[0].GetComponent<Toggle>().isOn = true;
-		if(projectSize == ProjectSize.MAJOR) ProjectSizeButtons[1].GetComponent<Toggle>().isOn = true;
-		projectSize = ProjectSizeCheck();
-		Specialization specialization = newProduct.specialization;
-		Theme theme = newProduct.theme;
-		AgeAudience ageAudience = newProduct.ageAudience;
-		GenderAudience genderAudience = newProduct.genderAudience;
+		if(newProduct.projectSize == ProjectSize.MINOR) ProjectSizeButtons[0].GetComponent<Toggle>().isOn = true;
+		if(newProduct.projectSize == ProjectSize.MAJOR) ProjectSizeButtons[1].GetComponent<Toggle>().isOn = true;
 		
-		SetScore(-creationCost, 0);
-		product = new Product("DemandedProduct",
-									  1.4,
-									  productCost,
-									  projectSize,
-									  theme,
-									  specialization,
-									  ageAudience,
-									  genderAudience,
-									  PropertyRight.SOLD_TO_ANOTHER_COMPANY,
-									  0, 0);
-									  
+		if(newProduct.specialization == Specialization.WEBSITE) SpecializationButtons[0].GetComponent<Toggle>().isOn = true;
+		if(newProduct.specialization == Specialization.GAME) SpecializationButtons[1].GetComponent<Toggle>().isOn = true;
+		
+		if(newProduct.theme == Theme.SPORT) ThemeButtons[0].GetComponent<Toggle>().isOn = true;
+		if(newProduct.theme == Theme.MUSIC) ThemeButtons[1].GetComponent<Toggle>().isOn = true;
+		if(newProduct.theme == Theme.LOVE) ThemeButtons[2].GetComponent<Toggle>().isOn = true;
+		if(newProduct.theme == Theme.FASHION) ThemeButtons[3].GetComponent<Toggle>().isOn = true;
+		if(newProduct.theme == Theme.SCHOOL) ThemeButtons[4].GetComponent<Toggle>().isOn = true;
+		if(newProduct.theme == Theme.SCIENCE) ThemeButtons[5].GetComponent<Toggle>().isOn = true;
+		if(newProduct.theme == Theme.SPACE) ThemeButtons[6].GetComponent<Toggle>().isOn = true;
+		if(newProduct.theme == Theme.WEATHER) ThemeButtons[7].GetComponent<Toggle>().isOn = true;
+
+		if(newProduct.ageAudience == AgeAudience.CHILDREN) AgeAudienceButtons[0].GetComponent<Toggle>().isOn = true;
+		if(newProduct.ageAudience == AgeAudience.EVERYONE) AgeAudienceButtons[1].GetComponent<Toggle>().isOn = true;
+		if(newProduct.ageAudience == AgeAudience.ADULT) AgeAudienceButtons[2].GetComponent<Toggle>().isOn = true;
+		
+		if(newProduct.genderAudience == GenderAudience.MALE) GenderAudienceButtons[0].GetComponent<Toggle>().isOn = true;
+		if(newProduct.genderAudience == GenderAudience.EVERYONE) GenderAudienceButtons[1].GetComponent<Toggle>().isOn = true;
+		if(newProduct.genderAudience == GenderAudience.FEMALE) GenderAudienceButtons[2].GetComponent<Toggle>().isOn = true;
+	
 		CreationButtons[0].interactable = false;			
 		CreationButtons[1].interactable = false;
 		CreationButtons[2].interactable = false;			
 		CreationButtons[3].interactable = false;
-		CreationPanel.SetActive(true); 
+		
+		ratio = 1.4;
+		CreationPanel.SetActive(true);
 	}
 	
 	ProjectSize ProjectSizeCheck()
@@ -470,7 +480,7 @@ public class MainSceneController : MonoBehaviour
 		{
 			ProjectSizeText.GetComponent<TMPro.TextMeshProUGUI>().text = "Стоимость разработки: 200К";
 			creationCost = 200000;
-			questionNumber = 5;
+			questionsCount = 5;
 			return ProjectSize.MAJOR;
 		}
 		return ProjectSize.MINOR;
@@ -486,7 +496,7 @@ public class MainSceneController : MonoBehaviour
 		{
 			return Specialization.GAME;
 		}
-		return Specialization.GAME;
+		return Specialization.WEBSITE;
 	}
 	
 	Theme ThemeCheck()
@@ -589,7 +599,6 @@ public class MainSceneController : MonoBehaviour
 		toggleObjects = new List<GameObject>();
 		foreach (var tech in techsList)
 		{
-			Debug.Log(category + "   " + tech.category);
 			isDefaultExist = 
 					(tech.category == Category.GAME_ENGINE 
 					|| tech.category == Category.GRAPHIC 
@@ -599,8 +608,7 @@ public class MainSceneController : MonoBehaviour
 					|| tech.category == Category.STRUCTURE
 					|| tech.category == Category.TEXT);
 			if(tech.category == category)
-			{			
-				Debug.Log("2");		
+			{				
 				techonologiesList.Add(tech);
 				if(isDefaultExist && !created)
 				{
@@ -608,9 +616,7 @@ public class MainSceneController : MonoBehaviour
 					firstClone.GetComponent<Toggle>().group = toggleGroup;
 					created = true;
 				}
-				Debug.Log("3");
 				clone = Instantiate(techPrefab, TechnologiesList, false);	
-				Debug.Log("4");
 				if(isDefaultExist) clone.GetComponent<Toggle>().group = toggleGroup;	
 				if(tech.state != TechState.RESEARCHED) clone.GetComponent<Toggle>().interactable = false;
 				var background = clone.transform.Find("Background").gameObject;
@@ -649,7 +655,7 @@ public class MainSceneController : MonoBehaviour
 		{
 			if (toggleObjects[i].GetComponent<Toggle>().isOn)
 			{
-				productCost += techonologiesList[i].productionCost;
+				product.productCost += techonologiesList[i].productionCost;
 				SetScore(-techonologiesList[i].productionCost, 0);
 			}	
 		}
@@ -693,21 +699,17 @@ public class MainSceneController : MonoBehaviour
 	{
 		product.propertyRight = PropertyRightCheck();
 		profitRatio = GetProfitRatio();
-		var income = 0;
-		expRatio = creationCost / 10000;
+		product.gainedExp = (int)product.productCost / 1000;
+		
 		if (PropertyRightButtons[0].GetComponent<Toggle>().isOn)
 		{
-			income = (int)((creationCost + productCost) * product.productProfitRatio);
-			Debug.Log(income);
-			Debug.Log(creationCost + productCost);
-			product.income = income;
+			product.income = (int)((product.productCost) * profitRatio * ratio);
 			GlobalController.Instance.products.Add(product);
-			SetScore(income, (int)(100 * expRatio));
+			SetScore(product.income, product.gainedExp);
 		}
 		else if (PropertyRightButtons[1].GetComponent<Toggle>().isOn)
 		{
-			income = (int)((creationCost + productCost) * profitRatio);
-			product.income = income;
+			product.income = (int)((product.productCost) * profitRatio * ratio);
 			GlobalController.Instance.products.Add(product);
 		}
 		
@@ -716,6 +718,8 @@ public class MainSceneController : MonoBehaviour
 		CreationButtons[1].interactable = true;
 		CreationButtons[2].interactable = true;			
 		CreationButtons[3].interactable = true;
+		CreateButton.interactable = true;
+		ratio = 1;
 	}
 
 	double GetProfitRatio()
@@ -735,7 +739,7 @@ public class MainSceneController : MonoBehaviour
 		{
 			if(product.propertyRight == PropertyRight.BELONGS_TO_OUR_COMPANY && product.dividendsCount < 5)
 			{
-				SetScore((int)product.income / 4, (int)(100 * expRatio));
+				SetScore((int)product.income / 4, (int)((100 * expRatio) / 4 ));
 				product.dividendsCount++;
 			}
 		}
@@ -752,7 +756,7 @@ public class MainSceneController : MonoBehaviour
 		else ProjectSizeButtons[1].GetComponent<Toggle>().interactable = true;
 	}
 
-	void WinGame()
+	public void WinGame()
 	{
 		WinGamePanel.SetActive(true);
 	}
@@ -795,7 +799,11 @@ public class MainSceneController : MonoBehaviour
 		questionNumber = 0;
 	}
 	
-	public void StartAnalytics(){ analyticsWeeks = 1; }
+	public void StartAnalytics()
+	{ 
+		AnalyticsButton.interactable = false;
+		analyticsWeeks = 1; 
+	}
 }
 
 public class Question

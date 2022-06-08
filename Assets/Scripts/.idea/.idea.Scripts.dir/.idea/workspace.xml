@@ -2,11 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1f7bcb2-6257-4513-9143-eb0e5709aeef" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../Scenes/StatisticScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../Scenes/StatisticScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../script.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../script.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../../ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Controllers/AnalyticsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Controllers/AnalyticsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Controllers/GlobalController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Controllers/GlobalController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Controllers/MainSceneController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Controllers/MainSceneController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Controllers/MainSceneController.cs.bak" beforeDir="false" afterPath="$PROJECT_DIR$/../Controllers/MainSceneController.cs.bak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Controllers/StatisticController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Controllers/StatisticController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Controllers/StatisticController.cs.bak" beforeDir="false" afterPath="$PROJECT_DIR$/../Controllers/StatisticController.cs.bak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Controllers/TreeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Controllers/TreeController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Controllers/TreeController.cs.bak" beforeDir="false" afterPath="$PROJECT_DIR$/../Controllers/TreeController.cs.bak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scenes/MainScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../Scenes/MainScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scenes/TreeScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../Scenes/TreeScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Scripts.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Scripts.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ShowStatistic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ShowStatistic.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TextMesh Pro/Fonts/Inter-Medium SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../TextMesh Pro/Fonts/Inter-Medium SDF.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TextMesh Pro/Fonts/Inter-Regular SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../TextMesh Pro/Fonts/Inter-Regular SDF.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../../UserSettings/EditorUserSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../UserSettings/Layouts/default-2021.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/../../UserSettings/Layouts/default-2021.dwlt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +43,8 @@
       <option name="presentableId" value="Default" />
       <updated>1653027412493</updated>
       <workItem from="1653027422923" duration="1000" />
+      <workItem from="1654636311068" duration="2000" />
+      <workItem from="1654636508880" duration="3000" />
     </task>
     <servers />
   </component>

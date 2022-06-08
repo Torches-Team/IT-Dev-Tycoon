@@ -6209,6 +6209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb6e2336121f3c944b63f6cc86329b07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainSceneController: {fileID: 0}
   researchButton: {fileID: 500494239}
   buttons:
   - {fileID: 2143362554}
