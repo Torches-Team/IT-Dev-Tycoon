@@ -13,6 +13,7 @@ public class StatisticController : MonoBehaviour
 	public Transform parentObject;
 	RectTransform rectTransform;
 	public List<Product> products;
+	public TextMeshProUGUI companyName;
 	
 	void Awake()
 	{
@@ -21,6 +22,7 @@ public class StatisticController : MonoBehaviour
 	
     void Start()
     {
+		companyName.text = GlobalController.Instance.companyName;
 		products = GlobalController.Instance.products;
         rectTransform = productsList.GetComponent<RectTransform>();
 		for(int i = 0; i < products.Count; i++)

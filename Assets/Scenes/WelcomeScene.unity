@@ -1033,11 +1033,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8687fc5bb0a2cf42a2507cb0bc59ed5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  companyName: 
   moneyScore: 0
   experienceScore: 0
+  gameLevel: 0
+  websiteLevel: 0
+  stage: 0
   week: 0
   month: 0
   year: 0
+  flag: 0
+  gameWon: 0
 --- !u!4 &1020151266
 Transform:
   m_ObjectHideFlags: 0
@@ -1102,6 +1108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b7045e5cbfa34e45ac73063d126f2cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InputProductName: {fileID: 1188203901}
 --- !u!1 &1104004218
 GameObject:
   m_ObjectHideFlags: 0
@@ -1804,6 +1811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b7045e5cbfa34e45ac73063d126f2cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InputProductName: {fileID: 0}
 --- !u!1 &1729757888
 GameObject:
   m_ObjectHideFlags: 0

@@ -463,7 +463,7 @@ MonoBehaviour:
   age: 
   gender: 
   income: 0
-  expenses: 0
+  productCost: 0
   gainedExp: 0
 --- !u!1 &264722564
 GameObject:
@@ -2790,6 +2790,7 @@ MonoBehaviour:
   globalController: {fileID: 0}
   productsList: {fileID: 287064988}
   parentObject: {fileID: 287064989}
+  companyName: {fileID: 856118454}
 --- !u!1 &1155440871
 GameObject:
   m_ObjectHideFlags: 0
@@ -3514,11 +3515,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8687fc5bb0a2cf42a2507cb0bc59ed5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  companyName: 
   moneyScore: 0
   experienceScore: 0
+  gameLevel: 0
+  websiteLevel: 0
+  stage: 0
   week: 0
   month: 0
   year: 0
+  flag: 0
+  gameWon: 0
 --- !u!4 &1369128097
 Transform:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class ShowScore : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class ShowScore : MonoBehaviour
 	
 	void SetText()
 	{
-		moneyScoreText.GetComponent<TMPro.TextMeshProUGUI>().text = "$" + GlobalController.Instance.moneyScore;
-		experienceScoreText.GetComponent<TMPro.TextMeshProUGUI>().text = GlobalController.Instance.experienceScore + " ОО";
+		moneyScoreText.GetComponent<TextMeshProUGUI>().text = "$" + GlobalController.Instance.moneyScore;
+		experienceScoreText.GetComponent<TextMeshProUGUI>().text = GlobalController.Instance.experienceScore + " ОО";
 	}
 }

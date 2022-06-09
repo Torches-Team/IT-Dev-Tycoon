@@ -39,7 +39,7 @@ public class MainSceneController : MonoBehaviour
 	
 	public List<bool> checkList;
 
-	public TMPro.TextMeshProUGUI Date; //Объект внутриигрового времени
+	public TextMeshProUGUI Date; //Объект внутриигрового времени
 	public GameObject Score; //Объект денежного счёта игрока
 	public GameObject ContextMenu; //Контекстное меню
 	
@@ -51,7 +51,7 @@ public class MainSceneController : MonoBehaviour
 	public GameObject ThemePanel;
 	public GameObject TargetAudiencePanel; //Панель целевой аудитории
 
-	public GameObject BottomPanelName; //Название компании на нижней панели
+	public TextMeshProUGUI BottomPanelProductName; //Название компании на нижней панели
 	public GameObject QuestionPanel; //Панель вопроса
 	public GameObject TechnologyPanel;
 	public GameObject ReleasePanel; //Панель выпуска продукта
@@ -67,13 +67,14 @@ public class MainSceneController : MonoBehaviour
 	public GameObject AgeText;
 	public GameObject GenderText;
 	
-	public List<GameObject> BottomIcons;
 	public List<Button> AnswerButtons;
 	public List<Toggle> PlayButtonsToggle;
 	public List<GameObject> DarkSpeedButtons;
 	public List<GameObject> Backgrounds;
 	public List<Button> CreationButtons;
 	public List<GameObject> EducationPanels;
+	public List<GameObject> Stages;
+	public List<TextMeshProUGUI> StageTexts;
 
 	public GameObject[] ProjectSizeButtons;
 	public GameObject[] SpecializationButtons;
@@ -82,7 +83,6 @@ public class MainSceneController : MonoBehaviour
 	public GameObject[] GenderAudienceButtons;
 	public GameObject[] PropertyRightButtons;
 	public GameObject[] Cells;
-	public GameObject[] Grades;
 	public Button CreateButton;
 	public Button AnalyticsButton;
 	
@@ -117,11 +117,12 @@ public class MainSceneController : MonoBehaviour
 	bool gameFinishedFlag = false;
 	bool created = false;
 	bool isDefaultExist = false;
-	List<bool> educationFlags;
+	bool demandedFlag = false;
 	
 	//Вспомогательные переменные
 	string productName;
 	int creationCost; //Стоимость создания нового продукта
+	int techsCost;
 	double ratio = 1;
 	int askedQuestionCount = 0;
 	double profitRatio;
@@ -145,16 +146,19 @@ public class MainSceneController : MonoBehaviour
 
 	void Start()
 	{	
+		GlobalController.Instance.gameExist = true;
+		if(GlobalController.Instance.eduWelcome) {EducationPanels[0].SetActive(true); GlobalController.Instance.eduWelcome = false;}
+	
 		AnswerButtons[0].onClick.AddListener(() => ReadAnswer(0));
 		AnswerButtons[1].onClick.AddListener(() => ReadAnswer(1));
 		
 		generalQuestions.Add(new Question("Мы создаем новое меню для пользовательского интерфейса, на что стоит уделить большее внимание?", "Красота", "Фукционал", 0.8, 1.4));
 		generalQuestions.Add(new Question("Для разработки продукта в коллектив требуются новые люди. Какой уровень будущих сотрудников будет приемлемым?", "Студенты", "Специалисты", 0.75, 1.4));
-		generalQuestions.Add(new Question("Презентовать ли будущий продукт на выставке IT-отрасли?", "Да", "Нет", 1, 0.9));
+		generalQuestions.Add(new Question("Презентовать ли будущий продукт на выставке IT-отрасли?", "Да", "Нет", 1.5, 0.9));
 		generalQuestions.Add(new Question("Недавно разгорелся скандал из-за утечки данных о пользователях популярного сайта доставки еды. Стоит ли нам лучше поработать над защитой персональных данных?", "Да", "Нет", 1.4, 1));
-		generalQuestions.Add(new Question("Один из сотрудников компании на недавнем совещании заявил о скором увольнении из-за переезда. Стоит ли нам уже сейчас найти ему замену", "Да", "Нет", 1.3, 0.8));
-		generalQuestions.Add(new Question("Один из сотрудников заявил о необходимости найма Scrum-менеджера для более грамотной работы команды. Стоит ли нам вложиться в это?", "Да", "Нет", 1.3, 0.9));
-		generalQuestions.Add(new Question("Использовать ли новую неопробованную технологию обратной связи с разработчиками на нашем продукте?", "Да", "Нет", 0.9, 1.2));
+		generalQuestions.Add(new Question("Один из сотрудников компании на недавнем совещании заявил о скором увольнении из-за переезда. Стоит ли нам уже сейчас найти ему замену", "Да", "Нет", 1.5, 0.8));
+		generalQuestions.Add(new Question("Один из сотрудников заявил о необходимости найма Scrum-менеджера для более грамотной работы команды. Стоит ли нам вложиться в это?", "Да", "Нет", 1.5, 0.9));
+		generalQuestions.Add(new Question("Использовать ли новую неопробованную технологию обратной связи с разработчиками на нашем продукте?", "Да", "Нет", 0.9, 1.5));
 		generalQuestions.Add(new Question("Уже скоро наступит дата очередного дедлайна для нашей команды, однако темп разработки говорит о нехватке времени для тестирования продукта. Стоит ли закрыть глаза на тесты и сделать работу в срок?", "Да", "Нет", 0.85, 1.3));
 		generalQuestions.Add(new Question("Скоро наступит лето, большинство сотрудников на это время запланировали свои отпуска. Для успешного завершения проекта нужно либо нанять новых сотрудников на время, либо обратиться к фрилансу. Что мы сделаем?", "Новые люди", "Фриланс", 1.5, 0.8));
 		generalQuestions.Add(new Question("В последнее время сотрудники все больше говорят о необходимости переезда в более просторный офис. Послушать ли сотрудников?", "Да", "Нет", 1.4, 0.9));
@@ -163,12 +167,12 @@ public class MainSceneController : MonoBehaviour
 		generalQuestions.Add(new Question("Недавно PR-менеджер компании предложил прорекламировать будущий продукт, заплатив гонорар известным блогерам. Стоит ли послушать его?", "Да", "Нет", 1.5, 1));
 		
 		childrenQuestions.Add(new Question("Для привлечения внимания детской аудитории маркетологи советуют разнообразить цветовую палитру продукта, однако это может негативно сказаться на других аспектах, стоит ли нам попробовать?", "Да", "Нет", 1.3, 0.8));
-		childrenQuestions.Add(new Question("В последнем выпуске популярного журнала по психологии высказывалось мнение о негативном влиянии компьютерных игра на психику детей. В качестве решения было предложено ввести ограничение по времени для игровой сессии, стоит ли нам применить данное решение?", "Да", "Нет", 0.7, 1.2));
+		childrenQuestions.Add(new Question("В последнем выпуске популярного журнала по психологии высказывалось мнение о негативном влиянии компьютерных игра на психику детей. В качестве решения было предложено ввести ограничение по времени для игровой сессии, стоит ли нам применить данное решение?", "Да", "Нет", 0.7, 1.6));
 		childrenQuestions.Add(new Question("Стоит ли нам разработать специальный фильтр нецензурной лексики для нашего продукта?", "Да", "Нет", 1.3, 0.4));
-		childrenQuestions.Add(new Question("Родители часто жалуются на необдуманные покупки своих детей в играх и сети, называя главной прчиной - жадность самих разработчиков. Откажемся ли мы от внутриигровых покупок или попросим самих родителей найти другие способы огрничить действия детей?", "Откажемся", "Дело родителей", 1.2, 0.9));
-		childrenQuestions.Add(new Question("У нас есть прекрасная возможность добавить образовательную функцию в наш продукт, стоит ли нам этим занятьься?", "Да", "Нет", 1.1, 0.9));
+		childrenQuestions.Add(new Question("Родители часто жалуются на необдуманные покупки своих детей в играх и сети, называя главной прчиной - жадность самих разработчиков. Откажемся ли мы от внутриигровых покупок или попросим самих родителей найти другие способы огрничить действия детей?", "Откажемся", "Дело родителей", 1.6, 0.9));
+		childrenQuestions.Add(new Question("У нас есть прекрасная возможность добавить образовательную функцию в наш продукт, стоит ли нам этим занятьься?", "Да", "Нет", 1.4, 0.9));
 		
-		adultQuestions.Add(new Question("Стоит ли нам разработать специальный фильтр нецензурной лексики для нашего продукта?", "Да", "Нет", 0.8, 1.2));
+		adultQuestions.Add(new Question("Стоит ли нам разработать специальный фильтр нецензурной лексики для нашего продукта?", "Да", "Нет", 0.8, 1.3));
 		adultQuestions.Add(new Question("Взрослые люди более мотивированы найти определенную полезную информацию для себя, множетсво отвлекающих компонентов продукта могут помешать этому. Стоит ли нам упростить дизайн?", "Да", "Нет", 1.3, 0.9));
 		//adultQuestions.Add(new Question("?", "Да", "Нет", 0.8, 1.2));
 		
@@ -180,23 +184,26 @@ public class MainSceneController : MonoBehaviour
 		gameCreationStages.Add(0, Category.GAME_ENGINE);
 		gameCreationStages.Add(1, Category.GAMEPLAY);
 		gameCreationStages.Add(2, Category.GRAPHIC);
-		gameCreationStages.Add(3, Category.SOUND);
+		gameCreationStages.Add(3, Category.WORLD_DESIGN);
 		gameCreationStages.Add(4, Category.PLOT_QUESTS);
+		gameCreationStages.Add(5, Category.AI);
+		gameCreationStages.Add(6, Category.DIALOGS);
+		gameCreationStages.Add(7, Category.LEVEL_DESIGN);
+		gameCreationStages.Add(8, Category.TECHNICAL_FEATURES);
+		gameCreationStages.Add(9, Category.SOUND);
 		
 		websiteCreationStages = new Dictionary<int, Category>();
 		websiteCreationStages.Add(0, Category.WEBSITE);
 		websiteCreationStages.Add(1, Category.STRUCTURE);
 		websiteCreationStages.Add(2, Category.TEXT);
 		websiteCreationStages.Add(3, Category.DESIGN);
-		websiteCreationStages.Add(4, Category.MARKETING);
-		
-		/*for(int i = 0; i < )
-		{
-			educationFlags[i]
-		}*/
+		websiteCreationStages.Add(4, Category.FONTS);
+		websiteCreationStages.Add(5, Category.INTERACT);
+		websiteCreationStages.Add(6, Category.SITE_FEATURES);
+		websiteCreationStages.Add(7, Category.TECHNOLOGIES);
+		websiteCreationStages.Add(8, Category.MARKETING);
 		
 		analyticsController.Awake();
-		//analyticsController.Start();
 		SpeedButtonChange();
 	}
 
@@ -300,21 +307,30 @@ public class MainSceneController : MonoBehaviour
 			releaseFlag = false;
 			askNewQuestionFlag = false;
 		}
-		
 		if (askNewQuestionFlag)
 		{
-			//AskQuestion();
-			if(product.specialization == Specialization.WEBSITE)
+			MarkCurrentQuestion(askedQuestionCount);
+			if(!demandedFlag)
 			{
-				Debug.Log("Website");
-				AskTechnology(websiteCreationStages[askedQuestionCount], GlobalController.Instance.websiteTechs);
+				if(product.specialization == Specialization.WEBSITE)
+				{
+					AskTechnology(websiteCreationStages[askedQuestionCount], GlobalController.Instance.websiteTechs);
+				}
+				if(product.specialization == Specialization.GAME)
+				{
+					AskTechnology(gameCreationStages[askedQuestionCount], GlobalController.Instance.gameTechs);
+				}
+				askNewQuestionFlag = false;			
 			}
-			if(product.specialization == Specialization.GAME)
+			else
 			{
-				Debug.Log("Game");
-				AskTechnology(gameCreationStages[askedQuestionCount], GlobalController.Instance.gameTechs);
+				askedQuestionCount++;
+				if(askedQuestionCount > questionsCount)
+				{
+					askNewQuestionFlag = false;
+					releaseFlag = true;
+				}
 			}
-			askNewQuestionFlag = false;					
 		}
 		if(analyticsWeeks != 0)
 		{
@@ -377,10 +393,31 @@ public class MainSceneController : MonoBehaviour
 	{
 		if (Input.GetKeyUp(KeyCode.Mouse1) && !CheckOnStopTime())
 		{
+			if(GlobalController.Instance.eduContext) {EducationPanels[4].SetActive(true); GlobalController.Instance.eduContext = false;}
 			ContextMenu.transform.position = Input.mousePosition;
 			ContextMenu.SetActive(!ContextMenu.activeSelf);
 		}
 	}	
+	
+	public void PreCreation()
+	{
+		if(GlobalController.Instance.eduCreation) {EducationPanels[5].SetActive(true); GlobalController.Instance.eduCreation = false;}
+	}
+	
+	public void EduTheme()
+	{
+		if(GlobalController.Instance.eduTheme) {EducationPanels[7].SetActive(true); GlobalController.Instance.eduTheme = false;}
+	}
+	
+	public void EduBank()
+	{
+		if(GlobalController.Instance.eduBank) {EducationPanels[19].SetActive(true); GlobalController.Instance.eduBank = false;}
+	}
+	
+	public void EduAnalytics()
+	{
+		if(GlobalController.Instance.eduAnalytics) {EducationPanels[20].SetActive(true); GlobalController.Instance.eduAnalytics = false;}
+	}
 	
 	public void CreateNewProduct()
 	{
@@ -388,11 +425,10 @@ public class MainSceneController : MonoBehaviour
 		CreateButton.interactable = false;
 		
 		productName = InputProductName.GetComponent<TMP_InputField>().text;
-		BottomPanelName.GetComponent<TextMeshProUGUI>().text = productName;
+		BottomPanelProductName.text = productName;
 		ResetBottomPanel();
 		
 		ProjectSize projectSize = ProjectSizeCheck();
-		
 		Specialization specialization = SpecializationCheck();
 		Theme theme = ThemeCheck();
 		AgeAudience ageAudience = AgeAudienceCheck();
@@ -400,6 +436,7 @@ public class MainSceneController : MonoBehaviour
 		askedQuestions = new List<Question>();
 	
 		SetScore(-creationCost, 0);
+		SetScore(-techsCost, 0);
 		product = new Product(productName,
 									  ratio,
 									  creationCost,
@@ -433,6 +470,7 @@ public class MainSceneController : MonoBehaviour
 	{
 		AnalyticsPanel.SetActive(false);
 		ResetBottomPanel();
+		demandedFlag = true;
 		
 		if(newProduct.projectSize == ProjectSize.MINOR) ProjectSizeButtons[0].GetComponent<Toggle>().isOn = true;
 		if(newProduct.projectSize == ProjectSize.MAJOR) ProjectSizeButtons[1].GetComponent<Toggle>().isOn = true;
@@ -462,25 +500,35 @@ public class MainSceneController : MonoBehaviour
 		CreationButtons[2].interactable = false;			
 		CreationButtons[3].interactable = false;
 		
+		techsCost = FindTotalCost(newProduct.usedTechs);
 		ratio = 1.4;
 		CreationPanel.SetActive(true);
+	}
+	
+	public int FindTotalCost(List<Technology> techs)
+	{
+		var sum = 0;
+		foreach(var tech in techs)
+		{
+			sum += tech.productionCost;
+		}
+		return sum;
 	}
 	
 	ProjectSize ProjectSizeCheck()
 	{
 		if (ProjectSizeButtons[0].GetComponent<Toggle>().isOn)
 		{
-			HideGrades();
 			ProjectSizeText.GetComponent<TMPro.TextMeshProUGUI>().text = "Стоимость разработки: 25К";
 			creationCost = 25000;
-			questionsCount = 3;
+			questionsCount = 5;
 			return ProjectSize.MINOR;
 		}
 		if (ProjectSizeButtons[1].GetComponent<Toggle>().isOn)
 		{
 			ProjectSizeText.GetComponent<TMPro.TextMeshProUGUI>().text = "Стоимость разработки: 200К";
 			creationCost = 200000;
-			questionsCount = 5;
+			questionsCount = 9;
 			return ProjectSize.MAJOR;
 		}
 		return ProjectSize.MINOR;
@@ -541,19 +589,16 @@ public class MainSceneController : MonoBehaviour
 		if (AgeAudienceButtons[0].GetComponent<Toggle>().isOn)
 		{
 			AgeText.GetComponent<TMPro.TextMeshProUGUI>().text = "Возраст: Дети";
-			BottomIcons[1].GetComponent<Image>().sprite = Children;
 			return AgeAudience.CHILDREN;
 		}
 		if (AgeAudienceButtons[1].GetComponent<Toggle>().isOn)
 		{
 			AgeText.GetComponent<TMPro.TextMeshProUGUI>().text = "Возраст: Все";
-			BottomIcons[1].GetComponent<Image>().sprite = EveryAge;
 			return AgeAudience.EVERYONE;
 		}
 		if (AgeAudienceButtons[2].GetComponent<Toggle>().isOn)
 		{
 			AgeText.GetComponent<TMPro.TextMeshProUGUI>().text = "Возраст: Взрослые";
-			BottomIcons[1].GetComponent<Image>().sprite = Adult;
 			return AgeAudience.ADULT;
 		}
 		return AgeAudience.EVERYONE;
@@ -564,19 +609,16 @@ public class MainSceneController : MonoBehaviour
 		if (GenderAudienceButtons[0].GetComponent<Toggle>().isOn)
 		{
 			GenderText.GetComponent<TMPro.TextMeshProUGUI>().text = "Пол: Мужчины";
-			BottomIcons[0].GetComponent<Image>().sprite = Men;
 			return GenderAudience.MALE;
 		}
 		if (GenderAudienceButtons[1].GetComponent<Toggle>().isOn)
 		{
 			GenderText.GetComponent<TMPro.TextMeshProUGUI>().text = "Пол: Все";
-			BottomIcons[0].GetComponent<Image>().sprite = EveryGender;
 			return GenderAudience.EVERYONE;
 		}
 		if (GenderAudienceButtons[2].GetComponent<Toggle>().isOn)
 		{
 			GenderText.GetComponent<TMPro.TextMeshProUGUI>().text = "Пол: Женщины";
-			BottomIcons[0].GetComponent<Image>().sprite = Women;
 			return GenderAudience.FEMALE;
 		}
 		return GenderAudience.EVERYONE;
@@ -591,16 +633,15 @@ public class MainSceneController : MonoBehaviour
 
 	public void AskTechnology(Category category, List<Technology> techsList)
 	{
-		MarkCurrentQuestion(askedQuestionCount);
 		askedQuestionCount++;
+
 		var clone = techPrefab;
 		var firstClone = firstTechPrefab;
 		techonologiesList = new List<Technology>();
 		toggleObjects = new List<GameObject>();
 		foreach (var tech in techsList)
 		{
-			isDefaultExist = 
-					(tech.category == Category.GAME_ENGINE 
+			isDefaultExist = (tech.category == Category.GAME_ENGINE 
 					|| tech.category == Category.GRAPHIC 
 					|| tech.category == Category.WEBSITE 
 					|| tech.category == Category.FONTS 
@@ -625,8 +666,10 @@ public class MainSceneController : MonoBehaviour
 				toggleObjects.Add(clone);
 			}
 		}
+			
 		TechnologyPanel.SetActive(true);
-	}
+		if(GlobalController.Instance.eduTechChoose) {EducationPanels[10].SetActive(true); GlobalController.Instance.eduTechChoose = false;}
+	} 
 	
 	public void ReadTechnology()
 	{
@@ -637,6 +680,7 @@ public class MainSceneController : MonoBehaviour
 		{
 			GameObject.Destroy(child.gameObject);
 		}
+		
 		if (askedQuestionCount >= questionsCount)
 		{
 			askNewQuestionFlag = false;
@@ -689,17 +733,17 @@ public class MainSceneController : MonoBehaviour
 			answers.Add(new Answer(QuestionTextPanel.GetComponent<TMPro.TextMeshProUGUI>().text,
 				AnswerText2Panel.GetComponent<TMPro.TextMeshProUGUI>().text, profit2));
 		}
-		//MarkDoneQuestion(askedQuestionCount - 1);
 
 		QuestionPanel.SetActive(false);
 		ReleasePanel.SetActive(true);
+		if(GlobalController.Instance.eduRelease) {EducationPanels[14].SetActive(true); GlobalController.Instance.eduRelease = false;}
 	}
 
 	public void ReleaseProduct()
 	{
 		product.propertyRight = PropertyRightCheck();
 		profitRatio = GetProfitRatio();
-		product.gainedExp = (int)product.productCost / 1000;
+		product.gainedExp = (int)product.productCost / 100;
 		
 		if (PropertyRightButtons[0].GetComponent<Toggle>().isOn)
 		{
@@ -719,6 +763,8 @@ public class MainSceneController : MonoBehaviour
 		CreationButtons[2].interactable = true;			
 		CreationButtons[3].interactable = true;
 		CreateButton.interactable = true;
+		demandedFlag = false;
+		techsCost = 0;
 		ratio = 1;
 	}
 
@@ -730,7 +776,7 @@ public class MainSceneController : MonoBehaviour
 			k *= answer.AnswerProfitRatio;
 		}
 		answers.Clear();
-		return k;
+		return k * 1.4;
 	}
 	
 	void Dividends()
@@ -768,34 +814,135 @@ public class MainSceneController : MonoBehaviour
 	
 	void MarkCurrentQuestion(int questionNumber)
 	{
-		Cells[questionNumber].GetComponent<Image>().color = new Color32(154, 154, 154, 255);
-	}
-	
-	void MarkDoneQuestion(int questionNumber)
-	{
-		Cells[questionNumber].GetComponent<Image>().color = new Color32(60, 200, 60, 255);
-		if(answers[questionNumber].AnswerProfitRatio < 1) Grades[questionNumber].GetComponent<Image>().sprite = Minus;
-		else if(answers[questionNumber].AnswerProfitRatio >= 1) Grades[questionNumber].GetComponent<Image>().sprite = Plus;
-	}
-	
-	void HideGrades()
-	{
-		Cells[3].GetComponent<Image>().color = new Color32(100, 100, 100, 255);
-		Cells[4].GetComponent<Image>().color = new Color32(100, 100, 100, 255);
-		Grades[3].GetComponent<Image>().color = new Color32(100, 100, 100, 255);
-		Grades[4].GetComponent<Image>().color = new Color32(100, 100, 100, 255);
+		if(questionNumber == 0)
+		{
+			Stages[0].SetActive(false);
+			Stages[1].SetActive(false);
+			Stages[2].SetActive(true);
+			Stages[3].SetActive(true);
+			Stages[4].SetActive(true);
+			
+			StageTexts[2].text = "I";
+			StageTexts[3].text = "II";
+			StageTexts[4].text = "III";
+		}
+		else if(questionNumber == 1)
+		{
+			Stages[0].SetActive(false);
+			Stages[1].SetActive(true);
+			Stages[2].SetActive(true);
+			Stages[3].SetActive(true);
+			Stages[4].SetActive(true);
+			
+			StageTexts[1].text = "I";
+			StageTexts[2].text = "II";
+			StageTexts[3].text = "III";
+			StageTexts[4].text = "IV";
+		}
+		else if(questionsCount == 5 && questionNumber == 3)
+		{
+			Stages[0].SetActive(true);
+			Stages[1].SetActive(true);
+			Stages[2].SetActive(true);
+			Stages[3].SetActive(true);
+			Stages[4].SetActive(false);
+			
+			StageTexts[0].text = "II";
+			StageTexts[1].text = "III";
+			StageTexts[2].text = "IV";
+			StageTexts[3].text = "V";
+		}
+		else if(questionsCount == 5 && questionNumber == 4)
+		{
+			Stages[0].SetActive(true);
+			Stages[1].SetActive(true);
+			Stages[2].SetActive(true);
+			Stages[3].SetActive(false);
+			Stages[4].SetActive(false);
+			
+			StageTexts[0].text = "III";
+			StageTexts[1].text = "IV";
+			StageTexts[2].text = "V";
+		}
+		else if(questionsCount == 9 && questionNumber == 7)
+		{
+			Stages[0].SetActive(true);
+			Stages[1].SetActive(true);
+			Stages[2].SetActive(true);
+			Stages[3].SetActive(true);
+			Stages[4].SetActive(false);
+			
+			StageTexts[0].text = "VI";
+			StageTexts[1].text = "VII";
+			StageTexts[2].text = "VIII";
+			StageTexts[3].text = "IX";
+		}
+		else if(questionsCount == 9 && questionNumber == 8)
+		{
+			Stages[0].SetActive(true);
+			Stages[1].SetActive(true);
+			Stages[2].SetActive(true);
+			Stages[3].SetActive(false);
+			Stages[4].SetActive(false);
+			
+			StageTexts[0].text = "VII";
+			StageTexts[1].text = "VIII";
+			StageTexts[2].text = "IX";
+		}
+		else
+		{
+			Stages[0].SetActive(true);
+			Stages[1].SetActive(true);
+			Stages[2].SetActive(true);
+			Stages[3].SetActive(true);
+			Stages[4].SetActive(true);
+			
+			if(questionNumber == 2)
+			{
+				StageTexts[0].text = "I";
+				StageTexts[1].text = "II";
+				StageTexts[2].text = "III";
+				StageTexts[3].text = "IV";
+				StageTexts[4].text = "V";
+			}
+			else if(questionNumber == 3)
+			{
+				StageTexts[0].text = "II";
+				StageTexts[1].text = "III";
+				StageTexts[2].text = "IV";
+				StageTexts[3].text = "V";
+				StageTexts[4].text = "VI";
+			}
+			else if(questionNumber == 4)
+			{
+				StageTexts[0].text = "III";
+				StageTexts[1].text = "IV";
+				StageTexts[2].text = "V";
+				StageTexts[3].text = "VI";
+				StageTexts[4].text = "VII";
+			}
+			else if(questionNumber == 5)
+			{
+				StageTexts[0].text = "IV";
+				StageTexts[1].text = "V";
+				StageTexts[2].text = "VI";
+				StageTexts[3].text = "VII";
+				StageTexts[4].text = "VIII";
+			}
+			else if(questionNumber == 6)
+			{
+				StageTexts[0].text = "V";
+				StageTexts[1].text = "VI";
+				StageTexts[2].text = "VII";
+				StageTexts[3].text = "VIII";
+				StageTexts[4].text = "IX";
+			}
+		}
+		//Cells[questionNumber].GetComponent<Image>().color = new Color32(154, 154, 154, 255);
 	}
 	
 	void ResetBottomPanel()
 	{
-		foreach (var cell in Cells)
-		{
-			cell.GetComponent<Image>().color = new Color32(204, 204, 204, 255);
-		}
-		foreach (var grade in Grades)
-		{
-			grade.GetComponent<Image>().sprite = Icon;
-		}
 		questionNumber = 0;
 	}
 	

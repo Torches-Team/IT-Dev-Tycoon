@@ -51,11 +51,11 @@ public class AnalyticsController : MonoBehaviour
     void Start()
     {
 		buttons[0].onClick.AddListener(() => ShowAnotherProduct(-1));
-		buttons[1].onClick.AddListener(() => mainSceneController.SetDemandedProduct(newProduct));
+		buttons[1].onClick.AddListener(() => CheckAllRequiredTechsResearched());
 		buttons[2].onClick.AddListener(() => ShowAnotherProduct(1));
 		
         demandedProducts = GetNewDemandedProducts();
-		activeId = 1;
+		activeId = 2;
 		newProduct = demandedProducts[activeId];
 
 		ShowAnotherProduct(0);
@@ -78,7 +78,6 @@ public class AnalyticsController : MonoBehaviour
 		else buttons[2].interactable = true;
 		
 		newProduct = demandedProducts[activeId];
-		Debug.Log(newProduct.specialization);
 	}
 	
 	string ParseProductToText(DemandedProduct product)
@@ -105,14 +104,62 @@ public class AnalyticsController : MonoBehaviour
 		demandedProducts = GetNewDemandedProducts();
 	}
 	
+	public void CheckAllRequiredTechsResearched()
+	{
+		foreach(var tech in newProduct.usedTechs)
+		{
+			if(!GlobalController.Instance.researchedTechs.Contains(tech))
+			{
+				return;
+			}
+		}
+		mainSceneController.SetDemandedProduct(newProduct);
+	}
+	
+	public List<DemandedProduct> GetAvailableProductsList()
+	{
+		List<DemandedProduct> availableTechnology = new List<DemandedProduct>();
+		
+		if(GlobalController.Instance.gameLevel > 1 || GlobalController.Instance.websiteLevel > 1)
+		{
+			if(GlobalController.Instance.gameLevel > 2 || GlobalController.Instance.websiteLevel > 2)
+			{
+				if(GlobalController.Instance.gameLevel > 3 || GlobalController.Instance.websiteLevel > 3)
+				{
+					foreach(var product in GlobalController.Instance.demanded)
+					{
+						if(product.level == 4) availableTechnology.Add(product);
+					}
+				}
+				
+				foreach(var product in GlobalController.Instance.demanded)
+				{
+					if(product.level == 3) availableTechnology.Add(product);
+				}
+			}
+			
+			foreach(var product in GlobalController.Instance.demanded)
+			{
+				if(product.level == 2) availableTechnology.Add(product);
+			}
+		}
+		
+		foreach(var product in GlobalController.Instance.demanded)
+		{
+			if(product.level == 1) availableTechnology.Add(product);
+		}
+		return availableTechnology;
+	}
+	
 	List<DemandedProduct> GetNewDemandedProducts()
 	{
+		var demandedProducts = GetAvailableProductsList();
 		var takenProducts = new List<DemandedProduct>();
 		var newDemandedProducts = new List<DemandedProduct>();
-		var randomProduct = GlobalController.Instance.demanded[new System.Random().Next(0, GlobalController.Instance.demanded.Count)];
-		for (int i = 0; i < 3; i++)
+		var randomProduct = demandedProducts[new System.Random().Next(0, demandedProducts.Count)];
+		for (int i = 0; i < 5; i++)
 		{
-			while(takenProducts.Contains(randomProduct)) randomProduct = GlobalController.Instance.demanded[new System.Random().Next(0, GlobalController.Instance.demanded.Count)];
+			while(takenProducts.Contains(randomProduct)) randomProduct = demandedProducts[new System.Random().Next(0, demandedProducts.Count)];
 			newDemandedProducts.Add(randomProduct);
 			takenProducts.Add(randomProduct);
 		}

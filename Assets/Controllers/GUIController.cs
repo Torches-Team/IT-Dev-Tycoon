@@ -10,6 +10,7 @@ public class GUIController : MonoBehaviour
 	public TMPro.TextMeshProUGUI InputProductName;
 	public Animator GUIAnimator;
 	public Animator ContextPanelAnimator;
+	public Animator BottomPanelAnimator;
 	public List<Button> buttons;
 	
 	void Start()
@@ -36,6 +37,16 @@ public class GUIController : MonoBehaviour
 			var isOpen = GUIAnimator.GetBool("Open");
 			
 			GUIAnimator.SetBool("Open", !isOpen);
+		}
+	}
+	
+	public void OpenCloseBottomPanel()
+	{
+		if(BottomPanelAnimator != null)
+		{
+			var isOpen = BottomPanelAnimator.GetBool("Open");
+		
+			BottomPanelAnimator.SetBool("Open", !isOpen);
 		}
 	}
 	

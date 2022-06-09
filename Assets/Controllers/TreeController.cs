@@ -125,7 +125,7 @@ public class TreeController : MonoBehaviour
 		}
 		else
 		{
-			if(CountResearchedTechs(GlobalController.Instance.gameTechs) + CountResearchedTechs(GlobalController.Instance.websiteTechs) >= 5) 
+			if(CountResearchedTechs(GlobalController.Instance.gameTechs) + CountResearchedTechs(GlobalController.Instance.websiteTechs) >= 54) 
 				GlobalController.Instance.gameWon = true;
 		}
 		CheckButtons();
@@ -140,6 +140,27 @@ public class TreeController : MonoBehaviour
 			SetScore(currentTech.moneyCost, currentTech.experienceCost);
 			CheckResearch();
 			researchButton.interactable = false;
+			
+			if(currentTech.title == "Игровой движок v.2" || currentTech.title == "Динамический сайт") GlobalController.Instance.gameLevel = 2;
+			if(currentTech.title == "Игровой движок v.3" || currentTech.title == "Веб-приложение") GlobalController.Instance.gameLevel = 3;
+			if(currentTech.title == "3D графика v.1" 
+			|| currentTech.title == "Улучшенный ИИ" 
+			|| currentTech.title == "Видеоролики"
+			|| currentTech.title == "Разветвленный сюжет"
+			|| currentTech.title == "Дерево способностей"
+			|| currentTech.title == "\"Пасхалки\""
+			|| currentTech.title == "Дерево диалогов"
+			|| currentTech.title == "Улучшенные текстуры"
+			|| currentTech.title == "Объемный звук"
+			|| currentTech.title == "База данных" 
+			|| currentTech.title == "Фреймворки" 
+			|| currentTech.title == "Портативность"
+			|| currentTech.title == "Стили дизайна"
+			|| currentTech.title == "Семейства шрифтов"
+			|| currentTech.title == "Блочная верстка"
+			|| currentTech.title == "Аналитика"
+			|| currentTech.title == "Реклама"
+			|| currentTech.title == "Тестирование") GlobalController.Instance.gameLevel = 4;
 		}
 	}
 	
