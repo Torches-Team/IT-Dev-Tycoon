@@ -9,10 +9,11 @@ public class EnterNameSceneControllers : MonoBehaviour
 {
     private string sceneToOpen = "MainScene";
 	public TMP_InputField InputProductName;
-
+	
     public void OpenScene()
     {
 		GlobalController.Instance.companyName = InputProductName.text;
+		GlobalController.Instance.Start();
 		SceneManager.LoadScene(sceneToOpen);
     }
 }

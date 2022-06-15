@@ -7,14 +7,29 @@ public class GlobalController : MonoBehaviour
 	public static GlobalController Instance;
 	MainSceneController mainSceneController;
 	BankController bankController;
-
+	
+	public bool gameExist = false;
+	
+	public string companyName;
 	public int moneyScore;
 	public int experienceScore;
+	public int gameLevel;
+	public int websiteLevel;
+	public int stage;
 	public int week;
 	public int month;
 	public int year;
 	public bool flag;
 	public bool gameWon;
+	public bool education;
+	public bool eduWelcome;
+	public bool eduContext;
+	public bool eduCreation;
+	public bool eduTheme;
+	public bool eduTechChoose;
+	public bool eduRelease;
+	public bool eduBank;
+	public bool eduAnalytics;
 	public List<Credit> credits;
 	public List<Product> products;
 	public List<DemandedProduct> demanded;
@@ -34,15 +49,30 @@ public class GlobalController : MonoBehaviour
 	    DontDestroyOnLoad(gameObject);
 	}
 	
-    void Start()
+    public void Start()
     {
-		moneyScore = 50000000;
-		experienceScore = 5000000;
+		companyName = "Company";
+		moneyScore = 50000;
+		experienceScore = 0;
+		gameLevel = 1;
+		websiteLevel = 1;
+		stage = 1;
 		week = 1;
 		month = 1;
 		year = 1;
 		flag = false;
 		gameWon = false;
+		if(education)
+		{
+			eduWelcome = true;
+			eduContext = true;
+			eduCreation = true;
+			eduTheme = true;
+			eduTechChoose = true;
+			eduRelease = true;
+			eduBank = true;
+			eduAnalytics = true;
+		}
 		credits = new List<Credit>();
 		products = new List<Product>();
 		demanded = new List<DemandedProduct>();
@@ -59,6 +89,8 @@ public class GlobalController : MonoBehaviour
 	
 	void Initialize()
 	{
+		Instance = this;
+	    DontDestroyOnLoad(gameObject);	
 		//Первый этап
 		gameTechs.Add(new Technology("Игровой движок v.1", Category.GAME_ENGINE, 5000, 10000, 150, TechState.AVAILABLE, new List<int>() {1, 2, 3} )); //0
 		
@@ -149,16 +181,212 @@ public class GlobalController : MonoBehaviour
 		credits.Add(new Credit(CREDIT_SIZE.MEDIUM, false, 125000, 11460, 12));
 		credits.Add(new Credit(CREDIT_SIZE.BIG, false, 250000, 22920, 12));
 		
-		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.SPORT, AgeAudience.CHILDREN, GenderAudience.MALE, new List<Technology>(){websiteTechs[0], websiteTechs[3]}));
-		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.SCIENCE, AgeAudience.CHILDREN, GenderAudience.MALE, new List<Technology>(){gameTechs[3]}));
-		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.FASHION, AgeAudience.EVERYONE, GenderAudience.FEMALE, new List<Technology>(){websiteTechs[0], websiteTechs[5]}));
-		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.WEATHER, AgeAudience.EVERYONE, GenderAudience.FEMALE, new List<Technology>(){gameTechs[3]}));
-		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.SPACE, AgeAudience.ADULT, GenderAudience.MALE, new List<Technology>(){websiteTechs[0], websiteTechs[2]}));
-		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.MUSIC, AgeAudience.ADULT, GenderAudience.FEMALE, new List<Technology>(){gameTechs[3]}));
-		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.MUSIC, AgeAudience.EVERYONE, GenderAudience.MALE, new List<Technology>(){websiteTechs[0], websiteTechs[1]}));
-		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.LOVE, AgeAudience.EVERYONE, GenderAudience.FEMALE, new List<Technology>(){gameTechs[3]}));
-		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.LOVE, AgeAudience.ADULT, GenderAudience.FEMALE, new List<Technology>(){websiteTechs[3], websiteTechs[4]}));
-		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.SCHOOL, AgeAudience.ADULT, GenderAudience.MALE, new List<Technology>(){gameTechs[3]}));
+		
+		//108 вариантов
+		//Minor Games
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.FASHION, AgeAudience.EVERYONE, GenderAudience.FEMALE, new List<Technology>(){gameTechs[0], gameTechs[1]}, 1.2, 1));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.FASHION, AgeAudience.CHILDREN, GenderAudience.FEMALE, new List<Technology>(){gameTechs[0], gameTechs[1]}, 1.2, 1));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.FASHION, AgeAudience.EVERYONE, GenderAudience.FEMALE, new List<Technology>(){gameTechs[4], gameTechs[6], gameTechs[10], gameTechs[11]}, 1.2, 2));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.FASHION, AgeAudience.CHILDREN, GenderAudience.FEMALE, new List<Technology>(){gameTechs[4], gameTechs[6], gameTechs[10], gameTechs[11]}, 1.2, 2));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.SPORT, AgeAudience.CHILDREN, GenderAudience.MALE, new List<Technology>(){gameTechs[0], gameTechs[1], gameTechs[3]}, 1.2, 1));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.SPORT, AgeAudience.EVERYONE, GenderAudience.MALE, new List<Technology>(){gameTechs[0], gameTechs[1], gameTechs[3]}, 1.2, 1));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.SPORT, AgeAudience.CHILDREN, GenderAudience.MALE, new List<Technology>(){gameTechs[4], gameTechs[5], gameTechs[7], gameTechs[8], gameTechs[9], gameTechs[10]}, 1.2, 2));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.SPORT, AgeAudience.EVERYONE, GenderAudience.MALE, new List<Technology>(){gameTechs[4], gameTechs[5], gameTechs[7], gameTechs[8], gameTechs[9], gameTechs[10]}, 1.2, 2));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.LOVE, AgeAudience.ADULT, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[0], gameTechs[1], gameTechs[3]}, 1.2, 1));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.LOVE, AgeAudience.CHILDREN, GenderAudience.FEMALE, new List<Technology>(){gameTechs[0], gameTechs[1], gameTechs[2], gameTechs[3]}, 1.2, 1));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.LOVE, AgeAudience.ADULT, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[4], gameTechs[6], gameTechs[10], gameTechs[13]}, 1.2, 2));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.LOVE, AgeAudience.CHILDREN, GenderAudience.FEMALE, new List<Technology>(){gameTechs[4], gameTechs[6], gameTechs[10], gameTechs[13]}, 1.2, 2));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.SCHOOL, AgeAudience.CHILDREN, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[0], gameTechs[1], gameTechs[2], gameTechs[3]}, 1.2, 1));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.SCHOOL, AgeAudience.CHILDREN, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[4], gameTechs[5], gameTechs[7], gameTechs[9], gameTechs[12], gameTechs[13]}, 1.2, 2));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.SCHOOL, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[4], gameTechs[5], gameTechs[7], gameTechs[9], gameTechs[12], gameTechs[13]}, 1.2, 2));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.MUSIC, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[0], gameTechs[1], gameTechs[3]}, 1.2, 1));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.MUSIC, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[4], gameTechs[6], gameTechs[9], gameTechs[10], gameTechs[11]}, 1.2, 2));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.SCIENCE, AgeAudience.CHILDREN, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[0], gameTechs[1], gameTechs[2], gameTechs[3]}, 1.2, 1));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.SCIENCE, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[0], gameTechs[1]}, 1.2, 1));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.SCIENCE, AgeAudience.CHILDREN, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[4], gameTechs[6], gameTechs[10], gameTechs[11]}, 1.2, 2));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.SCIENCE, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[4], gameTechs[6], gameTechs[10], gameTechs[11]}, 1.2, 2));
+	
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.SPACE, AgeAudience.CHILDREN, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[0], gameTechs[1], gameTechs[2], gameTechs[3]}, 1.2, 1));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.SPACE, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[0], gameTechs[1]}, 1.2, 1));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.SPACE, AgeAudience.CHILDREN, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[4], gameTechs[5], gameTechs[8], gameTechs[9], gameTechs[11], gameTechs[12]}, 1.2, 2));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.GAME, Theme.SPACE, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[4], gameTechs[5], gameTechs[8], gameTechs[9], gameTechs[11], gameTechs[12]}, 1.2, 2));
+		//25
+		
+		
+		//Minor Websites
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.FASHION, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[0], websiteTechs[1], websiteTechs[3]}, 1.2, 1));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.FASHION, AgeAudience.EVERYONE, GenderAudience.FEMALE, new List<Technology>(){websiteTechs[4], websiteTechs[6], websiteTechs[7], websiteTechs[8], websiteTechs[9], websiteTechs[10], websiteTechs[13]}, 1.2, 2));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.FASHION, AgeAudience.EVERYONE, GenderAudience.MALE, new List<Technology>(){websiteTechs[4], websiteTechs[6], websiteTechs[7], websiteTechs[8], websiteTechs[9], websiteTechs[10], websiteTechs[13]}, 1.2, 2));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.FASHION, AgeAudience.CHILDREN, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[4], websiteTechs[6], websiteTechs[7], websiteTechs[8], websiteTechs[9], websiteTechs[10], websiteTechs[13]}, 1.2, 2));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.SPORT, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[0], websiteTechs[3]}, 1.2, 1));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.SPORT, AgeAudience.ADULT, GenderAudience.MALE, new List<Technology>(){websiteTechs[4], websiteTechs[5], websiteTechs[7], websiteTechs[10], websiteTechs[11], websiteTechs[12], websiteTechs[13]}, 1.2, 2));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.SPORT, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[4], websiteTechs[5], websiteTechs[7], websiteTechs[10], websiteTechs[11], websiteTechs[12], websiteTechs[13]}, 1.2, 2));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.SPORT, AgeAudience.CHILDREN, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[4], websiteTechs[5], websiteTechs[7], websiteTechs[10], websiteTechs[11], websiteTechs[12], websiteTechs[13]}, 1.2, 2));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.LOVE, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[0], websiteTechs[2], websiteTechs[3]}, 1.2, 1));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.LOVE, AgeAudience.ADULT, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[4], websiteTechs[6], websiteTechs[7], websiteTechs[8], websiteTechs[11], websiteTechs[12], websiteTechs[13]}, 1.2, 2));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.SCHOOL, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[0], websiteTechs[1], websiteTechs[3]}, 1.2, 1));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.SCHOOL, AgeAudience.CHILDREN, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[4], websiteTechs[5], websiteTechs[7], websiteTechs[9], websiteTechs[10], websiteTechs[12], websiteTechs[13]}, 1.2, 2));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.MUSIC, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[0], websiteTechs[1], websiteTechs[3]}, 1.2, 1));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.MUSIC, AgeAudience.CHILDREN, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[4], websiteTechs[6], websiteTechs[7], websiteTechs[9], websiteTechs[10], websiteTechs[11], websiteTechs[13]}, 1.2, 2));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.MUSIC, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[4], websiteTechs[6], websiteTechs[7], websiteTechs[9], websiteTechs[10], websiteTechs[11], websiteTechs[13]}, 1.2, 2));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.MUSIC, AgeAudience.ADULT, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[4], websiteTechs[6], websiteTechs[7], websiteTechs[9], websiteTechs[10], websiteTechs[11], websiteTechs[13]}, 1.2, 2));
+
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.SCIENCE, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[0], websiteTechs[2], websiteTechs[3]}, 1.2, 1));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.SCIENCE, AgeAudience.CHILDREN, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[4], websiteTechs[5], websiteTechs[6], websiteTechs[9], websiteTechs[10], websiteTechs[12], websiteTechs[13]}, 1.2, 2));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.SCIENCE, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[4], websiteTechs[5], websiteTechs[6], websiteTechs[9], websiteTechs[10], websiteTechs[12], websiteTechs[13]}, 1.2, 2));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.SCIENCE, AgeAudience.ADULT, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[4], websiteTechs[5], websiteTechs[6], websiteTechs[9], websiteTechs[10], websiteTechs[12], websiteTechs[13]}, 1.2, 2));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.SPACE, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[0], websiteTechs[2], websiteTechs[3]}, 1.2, 1));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.SPACE, AgeAudience.ADULT, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[4], websiteTechs[5], websiteTechs[6], websiteTechs[9], websiteTechs[10], websiteTechs[12], websiteTechs[13]}, 1.2, 2));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.SPACE, AgeAudience.CHILDREN, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[4], websiteTechs[5], websiteTechs[6], websiteTechs[9], websiteTechs[10], websiteTechs[12], websiteTechs[13]}, 1.2, 2));
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.SPACE, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[4], websiteTechs[5], websiteTechs[6], websiteTechs[9], websiteTechs[10], websiteTechs[12], websiteTechs[13]}, 1.2, 2));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.WEATHER, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[0], websiteTechs[1], websiteTechs[3]}, 1.2, 1));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MINOR, Specialization.WEBSITE, Theme.WEATHER, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[4], websiteTechs[5], websiteTechs[6], websiteTechs[7], websiteTechs[9], websiteTechs[12], websiteTechs[13]}, 1.2, 2));
+		//51
+		
+		
+		//Major Games
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.FASHION, AgeAudience.EVERYONE, GenderAudience.FEMALE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17]}, 1.4, 3));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.FASHION, AgeAudience.CHILDREN, GenderAudience.FEMALE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17]}, 1.4, 3));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.FASHION, AgeAudience.EVERYONE, GenderAudience.FEMALE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17], gameTechs[18], gameTechs[20], gameTechs[23], gameTechs[25], gameTechs[26]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.FASHION, AgeAudience.CHILDREN, GenderAudience.FEMALE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17], gameTechs[18], gameTechs[20], gameTechs[23], gameTechs[25], gameTechs[26]}, 1.4, 4));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.SPORT, AgeAudience.CHILDREN, GenderAudience.MALE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17]}, 1.4, 3));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.SPORT, AgeAudience.EVERYONE, GenderAudience.MALE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17]}, 1.4, 3));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.SPORT, AgeAudience.CHILDREN, GenderAudience.MALE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17], gameTechs[18], gameTechs[19], gameTechs[20], gameTechs[22], gameTechs[25], gameTechs[26]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.SPORT, AgeAudience.EVERYONE, GenderAudience.MALE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17], gameTechs[18], gameTechs[19], gameTechs[20], gameTechs[22], gameTechs[25], gameTechs[26]}, 1.4, 4));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.LOVE, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17]}, 1.4, 3));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.LOVE, AgeAudience.CHILDREN, GenderAudience.FEMALE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17], gameTechs[19], gameTechs[20], gameTechs[21], gameTechs[23], gameTechs[24]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.LOVE, AgeAudience.ADULT, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17], gameTechs[19], gameTechs[20], gameTechs[21], gameTechs[23], gameTechs[24]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.LOVE, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17], gameTechs[19], gameTechs[20], gameTechs[21], gameTechs[23], gameTechs[24]}, 1.4, 4));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.SCHOOL, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17]}, 1.4, 3));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.SCHOOL, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17], gameTechs[18], gameTechs[20], gameTechs[21], gameTechs[24], gameTechs[25]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.SCHOOL, AgeAudience.CHILDREN, GenderAudience.FEMALE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17], gameTechs[18], gameTechs[20], gameTechs[21], gameTechs[24], gameTechs[25]}, 1.4, 4));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.MUSIC, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17]}, 1.4, 3));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.MUSIC, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17], gameTechs[23], gameTechs[26]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.MUSIC, AgeAudience.CHILDREN, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17], gameTechs[23], gameTechs[26]}, 1.4, 4));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.SCIENCE, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17]}, 1.4, 3));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.SCIENCE, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17], gameTechs[20], gameTechs[22], gameTechs[25], gameTechs[26]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.SCIENCE, AgeAudience.CHILDREN, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17], gameTechs[20], gameTechs[22], gameTechs[25], gameTechs[26]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.SCIENCE, AgeAudience.ADULT, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17], gameTechs[20], gameTechs[22], gameTechs[25], gameTechs[26]}, 1.4, 4));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.SPACE, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17]}, 1.4, 3));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.SPACE, AgeAudience.CHILDREN, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17], gameTechs[18], gameTechs[19], gameTechs[22], gameTechs[24], gameTechs[25], gameTechs[26]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.SPACE, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17], gameTechs[18], gameTechs[19], gameTechs[22], gameTechs[24], gameTechs[25], gameTechs[26]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.GAME, Theme.SPACE, AgeAudience.ADULT, GenderAudience.EVERYONE, new List<Technology>(){gameTechs[14], gameTechs[15], gameTechs[16], gameTechs[17], gameTechs[18], gameTechs[19], gameTechs[22], gameTechs[24], gameTechs[25], gameTechs[26]}, 1.4, 4));
+		//77
+		
+		
+		//Major Websites
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.FASHION, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17]}, 1.4, 3));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.FASHION, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[18], websiteTechs[20], websiteTechs[21], websiteTechs[23], websiteTechs[24], websiteTechs[25]}, 1.4, 3));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.FASHION, AgeAudience.ADULT, GenderAudience.FEMALE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[18], websiteTechs[20], websiteTechs[21], websiteTechs[23], websiteTechs[24], websiteTechs[25]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.FASHION, AgeAudience.ADULT, GenderAudience.MALE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[18], websiteTechs[20], websiteTechs[21], websiteTechs[23], websiteTechs[24], websiteTechs[25]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.FASHION, AgeAudience.EVERYONE, GenderAudience.FEMALE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[18], websiteTechs[20], websiteTechs[21], websiteTechs[23], websiteTechs[24], websiteTechs[25]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.FASHION, AgeAudience.EVERYONE, GenderAudience.MALE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[18], websiteTechs[20], websiteTechs[21], websiteTechs[23], websiteTechs[24], websiteTechs[25]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.FASHION, AgeAudience.CHILDREN, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[18], websiteTechs[20], websiteTechs[21], websiteTechs[23], websiteTechs[24], websiteTechs[25]}, 1.4, 4));
+
+
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.SPORT, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17]}, 1.4, 3));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.SPORT, AgeAudience.ADULT, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17]}, 1.4, 3));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.SPORT, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[20], websiteTechs[21], websiteTechs[22], websiteTechs[23], websiteTechs[25]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.SPORT, AgeAudience.ADULT, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[20], websiteTechs[21], websiteTechs[22], websiteTechs[23], websiteTechs[25]}, 1.4, 4));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.LOVE, AgeAudience.ADULT, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17]}, 1.4, 3));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.LOVE, AgeAudience.ADULT, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[19], websiteTechs[20], websiteTechs[21], websiteTechs[22], websiteTechs[23], websiteTechs[25], websiteTechs[26]}, 1.4, 4));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.MUSIC, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17]}, 1.4, 3));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.MUSIC, AgeAudience.CHILDREN, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[18], websiteTechs[19], websiteTechs[20], websiteTechs[21], websiteTechs[23], websiteTechs[25], websiteTechs[26]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.MUSIC, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[18], websiteTechs[19], websiteTechs[20], websiteTechs[21], websiteTechs[23], websiteTechs[25], websiteTechs[26]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.MUSIC, AgeAudience.ADULT, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[18], websiteTechs[19], websiteTechs[20], websiteTechs[21], websiteTechs[23], websiteTechs[25], websiteTechs[26]}, 1.4, 4));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.SCHOOL, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17]}, 1.4, 3));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.SCHOOL, AgeAudience.CHILDREN, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[18], websiteTechs[19], websiteTechs[22], websiteTechs[24], websiteTechs[26]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.SCHOOL, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[18], websiteTechs[19], websiteTechs[22], websiteTechs[24], websiteTechs[26]}, 1.4, 4));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.SCIENCE, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17]}, 1.4, 3));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.SCIENCE, AgeAudience.CHILDREN, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[18], websiteTechs[19], websiteTechs[21], websiteTechs[23], websiteTechs[24], websiteTechs[26]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.SCIENCE, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[18], websiteTechs[19], websiteTechs[21], websiteTechs[23], websiteTechs[24], websiteTechs[26]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.SCIENCE, AgeAudience.ADULT, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[18], websiteTechs[19], websiteTechs[21], websiteTechs[23], websiteTechs[24], websiteTechs[26]}, 1.4, 4));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.SPACE, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17]}, 1.4, 3));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.SPACE, AgeAudience.CHILDREN, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[18], websiteTechs[19], websiteTechs[21], websiteTechs[23], websiteTechs[24], websiteTechs[26]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.SPACE, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[18], websiteTechs[19], websiteTechs[21], websiteTechs[23], websiteTechs[24], websiteTechs[26]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.SPACE, AgeAudience.ADULT, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[18], websiteTechs[19], websiteTechs[21], websiteTechs[23], websiteTechs[24], websiteTechs[26]}, 1.4, 4));
+		
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.WEATHER, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17]}, 1.4, 3));
+		
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.WEATHER, AgeAudience.EVERYONE, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[18], websiteTechs[19], websiteTechs[20], websiteTechs[23], websiteTechs[26]}, 1.4, 4));
+		demanded.Add(new DemandedProduct(ProjectSize.MAJOR, Specialization.WEBSITE, Theme.WEATHER, AgeAudience.ADULT, GenderAudience.EVERYONE, new List<Technology>(){websiteTechs[14], websiteTechs[15], websiteTechs[16], websiteTechs[17], websiteTechs[18], websiteTechs[19], websiteTechs[20], websiteTechs[23], websiteTechs[26]}, 1.4, 4));
+		//108
 	}
 }
 
@@ -216,8 +444,10 @@ public class DemandedProduct
 	public AgeAudience ageAudience;
 	public GenderAudience genderAudience;
 	public List<Technology> usedTechs;
+	public double productProfitRatio;
+	public int level;
 
-	public DemandedProduct(ProjectSize projectSize, Specialization specialization, Theme theme, AgeAudience ageAudience, GenderAudience genderAudience, List<Technology> usedTechs)
+	public DemandedProduct(ProjectSize projectSize, Specialization specialization, Theme theme, AgeAudience ageAudience, GenderAudience genderAudience, List<Technology> usedTechs, double productProfitRatio, int level)
 	{
 		this.projectSize = projectSize;
 		this.specialization = specialization;
@@ -225,6 +455,8 @@ public class DemandedProduct
 		this.ageAudience = ageAudience;
 		this.genderAudience = genderAudience;
 		this.usedTechs = usedTechs;
+		this.productProfitRatio = productProfitRatio;
+		this.level = level;
 	}
 }
 

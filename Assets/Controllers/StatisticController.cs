@@ -43,10 +43,10 @@ public class StatisticController : MonoBehaviour
 		childObject.transform.SetParent(parentObject);
 		childObject.AddComponent<RectTransform>();
 		childObject.AddComponent<CanvasRenderer>();
-		childObject.AddComponent<Image>().color = new Color32(255, 138, 95, 75);
+		childObject.AddComponent<Image>().color = new Color32(135, 80, 60, 255);
 		var button = childObject.AddComponent<Button>();
 		var palette = button.colors;
-		palette.highlightedColor = new Color32(170, 170, 170, 255);
+		palette.highlightedColor = new Color32(200, 200, 200, 255);
 		button.colors = palette;
 		button.onClick.AddListener(() => ShowDescription(i));
 		//palette.highlightedColor = new Color32(10, 10, 10, 255);

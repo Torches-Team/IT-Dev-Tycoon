@@ -147,7 +147,6 @@ public class MainSceneController : MonoBehaviour
 	void Start()
 	{	
 		GlobalController.Instance.gameExist = true;
-		if(GlobalController.Instance.eduWelcome) {EducationPanels[0].SetActive(true); GlobalController.Instance.eduWelcome = false;}
 	
 		AnswerButtons[0].onClick.AddListener(() => ReadAnswer(0));
 		AnswerButtons[1].onClick.AddListener(() => ReadAnswer(1));
@@ -176,9 +175,9 @@ public class MainSceneController : MonoBehaviour
 		adultQuestions.Add(new Question("Взрослые люди более мотивированы найти определенную полезную информацию для себя, множетсво отвлекающих компонентов продукта могут помешать этому. Стоит ли нам упростить дизайн?", "Да", "Нет", 1.3, 0.9));
 		//adultQuestions.Add(new Question("?", "Да", "Нет", 0.8, 1.2));
 		
-		maleQuestions.Add(new Question("?", "Да", "Нет", 0.8, 1.2));
+		//maleQuestions.Add(new Question("?", "Да", "Нет", 0.8, 1.2));
 		
-		femaleQuestions.Add(new Question("?", "Да", "Нет", 0.8, 1.2));
+		//femaleQuestions.Add(new Question("?", "Да", "Нет", 0.8, 1.2));
 		
 		gameCreationStages = new Dictionary<int, Category>();
 		gameCreationStages.Add(0, Category.GAME_ENGINE);
@@ -205,6 +204,7 @@ public class MainSceneController : MonoBehaviour
 		
 		analyticsController.Awake();
 		SpeedButtonChange();
+		if(GlobalController.Instance.eduWelcome) {EducationPanels[0].SetActive(true); GlobalController.Instance.eduWelcome = false;}
 	}
 
 	void Update()
@@ -340,6 +340,7 @@ public class MainSceneController : MonoBehaviour
 				analyticsWeeks = 0;
 				AnalyticsButton.interactable = true;
 				AnalyticsPanel.SetActive(true);
+				if(GlobalController.Instance.eduAnalytics) {GlobalController.Instance.eduAnalytics = false; EducationPanels[21].SetActive(true);}
 			}
 		}
 	}
@@ -393,13 +394,18 @@ public class MainSceneController : MonoBehaviour
 	{
 		if (Input.GetKeyUp(KeyCode.Mouse1) && !CheckOnStopTime())
 		{
-			if(GlobalController.Instance.eduContext) {EducationPanels[4].SetActive(true); GlobalController.Instance.eduContext = false;}
-			ContextMenu.transform.position = Input.mousePosition;
+			if(GlobalController.Instance.eduContext) {EducationPanels[4].SetActive(true); GlobalController.Instance.eduContext = false; ContextMenu.transform.position = new Vector3(960,540,0);}
+			else ContextMenu.transform.position = Input.mousePosition; 
 			ContextMenu.SetActive(!ContextMenu.activeSelf);
 		}
 	}	
 	
-	public void PreCreation()
+	public void EduWelcome()
+	{
+		if(GlobalController.Instance.eduWelcome) GlobalController.Instance.eduWelcome = false;
+	}
+	
+	public void EduCreation()
 	{
 		if(GlobalController.Instance.eduCreation) {EducationPanels[5].SetActive(true); GlobalController.Instance.eduCreation = false;}
 	}
@@ -416,7 +422,7 @@ public class MainSceneController : MonoBehaviour
 	
 	public void EduAnalytics()
 	{
-		if(GlobalController.Instance.eduAnalytics) {EducationPanels[20].SetActive(true); GlobalController.Instance.eduAnalytics = false;}
+		if(GlobalController.Instance.eduAnalytics) EducationPanels[20].SetActive(true);
 	}
 	
 	public void CreateNewProduct()
@@ -950,6 +956,11 @@ public class MainSceneController : MonoBehaviour
 	{ 
 		AnalyticsButton.interactable = false;
 		analyticsWeeks = 1; 
+	}
+	
+	public void EducationBank()
+	{
+		if(GlobalController.Instance.eduBank) {GlobalController.Instance.eduBank = false; EducationPanels[19].SetActive(true);}
 	}
 }
 

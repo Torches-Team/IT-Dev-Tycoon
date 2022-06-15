@@ -54,12 +54,14 @@ public class BankController : MonoBehaviour
 	{
 		for(int i = 0; i < credits.Count; i++)
 		{
+			Debug.Log("1");
 			var credit = credits[i];
 			if(credit.isActive)
 			{
+				Debug.Log("2");
 				SetScore(-credit.monthlyPayment);
 				credit.paymentsLeft--;
-				
+				Debug.Log("3");
 				if(credit.paymentsLeft <= 0) RepayLoan(i);
 			}
 		}

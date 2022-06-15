@@ -15,6 +15,7 @@ public class AnalyticsController : MonoBehaviour
 	public TMPro.TextMeshProUGUI descriptionText;
 	public Dictionary<ProjectSize, string> ProjectSizeDict;
 	public Dictionary<Specialization, string> SpecializationDict;
+	public Dictionary<Theme, string> ThemeDict;
 	public Dictionary<AgeAudience, string> AgeAudienceDict;
 	public Dictionary<GenderAudience, string> GenderAudienceDict;
 	public DemandedProduct newProduct;
@@ -30,6 +31,7 @@ public class AnalyticsController : MonoBehaviour
 
 		ProjectSizeDict = new Dictionary<ProjectSize, string>();
 		SpecializationDict = new Dictionary<Specialization, string>();
+		ThemeDict = new Dictionary<Theme, string>();
 		AgeAudienceDict = new Dictionary<AgeAudience, string>();
 		GenderAudienceDict = new Dictionary<GenderAudience, string>();
 
@@ -38,6 +40,15 @@ public class AnalyticsController : MonoBehaviour
 		
 		SpecializationDict.Add(Specialization.GAME, "Игра");
 		SpecializationDict.Add(Specialization.WEBSITE, "Веб-сайт");
+		
+		ThemeDict.Add(Theme.SPORT, "Спорт");
+		ThemeDict.Add(Theme.MUSIC, "Музыка");
+		ThemeDict.Add(Theme.LOVE, "Любовь");
+		ThemeDict.Add(Theme.FASHION, "Мода");
+		ThemeDict.Add(Theme.SCHOOL, "Школа");
+		ThemeDict.Add(Theme.SCIENCE, "Наука");
+		ThemeDict.Add(Theme.SPACE, "Космос");
+		ThemeDict.Add(Theme.WEATHER, "Погода");
 		
 		AgeAudienceDict.Add(AgeAudience.CHILDREN, "Дети");
 		AgeAudienceDict.Add(AgeAudience.EVERYONE, "Все");
@@ -85,6 +96,7 @@ public class AnalyticsController : MonoBehaviour
 		var str = 
 		" -Размер проекта: " + ProjectSizeDict[product.projectSize] + 
 		"\n -Специализация: " + SpecializationDict[product.specialization] + 
+		"\n -Тематика: " + ThemeDict[product.theme] +
 		"\n -Возраст: " + AgeAudienceDict[product.ageAudience] + 
 		"\n -Пол: " + GenderAudienceDict[product.genderAudience] +
 		"\n -Технологии: \n";

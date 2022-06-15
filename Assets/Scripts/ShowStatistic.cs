@@ -8,6 +8,7 @@ public class ShowStatistic : MonoBehaviour
 	public static ShowStatistic Instance;
 	public List<TextMeshProUGUI> textFields;
 	public string specialization;
+	public string theme;
 	public string age;
 	public string gender;
 	public int income;
@@ -42,12 +43,22 @@ public class ShowStatistic : MonoBehaviour
 		else if (product.genderAudience == GenderAudience.FEMALE) gender = "Женщины";
 		else gender = "Все";
 		
+		if (product.theme == Theme.SPORT) theme = "Спорт";
+		else if (product.theme == Theme.MUSIC) theme = "Музыка";
+		else if (product.theme == Theme.LOVE) theme = "Любовь";
+		else if (product.theme == Theme.FASHION) theme = "Мода";
+		else if (product.theme == Theme.SCHOOL) theme = "Школа";
+		else if (product.theme == Theme.SCIENCE) theme = "Наука";
+		else if (product.theme == Theme.SPACE) theme = "Космос";
+		else theme = "Погода";
+		
 		income = product.income;
 		productCost = product.productCost;
 		gainedExp = product.gainedExp;
 		
 		textFields[0].text = product.productName;
 		textFields[1].text = specialization;
+		textFields[7].text = theme;
 		textFields[2].text = age;
 		textFields[3].text = gender;
 		textFields[4].text = income + "";

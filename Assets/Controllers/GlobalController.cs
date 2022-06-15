@@ -21,14 +21,15 @@ public class GlobalController : MonoBehaviour
 	public int year;
 	public bool flag;
 	public bool gameWon;
-	public bool eduWelcome = true;
-	public bool eduContext = true;
-	public bool eduCreation = true;
-	public bool eduTheme = true;
-	public bool eduTechChoose = true;
-	public bool eduRelease = true;
-	public bool eduBank = true;
-	public bool eduAnalytics = true;
+	public bool education;
+	public bool eduWelcome;
+	public bool eduContext;
+	public bool eduCreation;
+	public bool eduTheme;
+	public bool eduTechChoose;
+	public bool eduRelease;
+	public bool eduBank;
+	public bool eduAnalytics;
 	public List<Credit> credits;
 	public List<Product> products;
 	public List<DemandedProduct> demanded;
@@ -50,7 +51,7 @@ public class GlobalController : MonoBehaviour
 	
     public void Start()
     {
-		companyName = "Company";
+		companyName = "IT Dev Tycoon";
 		moneyScore = 50000;
 		experienceScore = 0;
 		gameLevel = 1;
@@ -61,6 +62,17 @@ public class GlobalController : MonoBehaviour
 		year = 1;
 		flag = false;
 		gameWon = false;
+		if(education)
+		{
+			eduWelcome = true;
+			eduContext = true;
+			eduCreation = true;
+			eduTheme = true;
+			eduTechChoose = true;
+			eduRelease = true;
+			eduBank = true;
+			eduAnalytics = true;
+		}
 		credits = new List<Credit>();
 		products = new List<Product>();
 		demanded = new List<DemandedProduct>();
@@ -77,6 +89,8 @@ public class GlobalController : MonoBehaviour
 	
 	void Initialize()
 	{
+		Instance = this;
+	    DontDestroyOnLoad(gameObject);	
 		//Первый этап
 		gameTechs.Add(new Technology("Игровой движок v.1", Category.GAME_ENGINE, 5000, 10000, 150, TechState.AVAILABLE, new List<int>() {1, 2, 3} )); //0
 		
