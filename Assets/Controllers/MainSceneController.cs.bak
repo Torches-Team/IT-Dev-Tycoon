@@ -175,9 +175,9 @@ public class MainSceneController : MonoBehaviour
 		adultQuestions.Add(new Question("Взрослые люди более мотивированы найти определенную полезную информацию для себя, множетсво отвлекающих компонентов продукта могут помешать этому. Стоит ли нам упростить дизайн?", "Да", "Нет", 1.3, 0.9));
 		//adultQuestions.Add(new Question("?", "Да", "Нет", 0.8, 1.2));
 		
-		maleQuestions.Add(new Question("?", "Да", "Нет", 0.8, 1.2));
+		//maleQuestions.Add(new Question("?", "Да", "Нет", 0.8, 1.2));
 		
-		femaleQuestions.Add(new Question("?", "Да", "Нет", 0.8, 1.2));
+		//femaleQuestions.Add(new Question("?", "Да", "Нет", 0.8, 1.2));
 		
 		gameCreationStages = new Dictionary<int, Category>();
 		gameCreationStages.Add(0, Category.GAME_ENGINE);
