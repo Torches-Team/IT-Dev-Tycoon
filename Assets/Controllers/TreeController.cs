@@ -133,7 +133,7 @@ public class TreeController : MonoBehaviour
 	
 	public void ResearchNewTech()
 	{
-		if (currentTech.state == TechState.AVAILABLE && currentTech.moneyCost < GlobalController.Instance.moneyScore && currentTech.experienceCost < GlobalController.Instance.experienceScore)
+		if (currentTech.state == TechState.AVAILABLE && currentTech.moneyCost <= GlobalController.Instance.moneyScore && currentTech.experienceCost <= GlobalController.Instance.experienceScore)
 		{
 			currentTech.state = TechState.RESEARCHED;
 			GlobalController.Instance.researchedTechs.Add(currentTech);

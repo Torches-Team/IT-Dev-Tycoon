@@ -52,6 +52,7 @@ public class BankController : MonoBehaviour
 	
 	public void Payment()
 	{
+		credits = GlobalController.Instance.credits;
 		for(int i = 0; i < credits.Count; i++)
 		{
 			Debug.Log("1");

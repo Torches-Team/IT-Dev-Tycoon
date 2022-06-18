@@ -555,35 +555,35 @@ public class MainSceneController : MonoBehaviour
 	
 	Theme ThemeCheck()
 	{
-		if (SpecializationButtons[0].GetComponent<Toggle>().isOn)
+		if (ThemeButtons[0].GetComponent<Toggle>().isOn)
 		{
 			return Theme.SPORT;
 		}
-		if (SpecializationButtons[1].GetComponent<Toggle>().isOn)
+		if (ThemeButtons[1].GetComponent<Toggle>().isOn)
 		{
 			return Theme.MUSIC;
 		}
-		if (SpecializationButtons[2].GetComponent<Toggle>().isOn)
+		if (ThemeButtons[2].GetComponent<Toggle>().isOn)
 		{
 			return Theme.LOVE;
 		}
-		if (SpecializationButtons[3].GetComponent<Toggle>().isOn)
+		if (ThemeButtons[3].GetComponent<Toggle>().isOn)
 		{
 			return Theme.FASHION;
 		}
-		if (SpecializationButtons[4].GetComponent<Toggle>().isOn)
+		if (ThemeButtons[4].GetComponent<Toggle>().isOn)
 		{
 			return Theme.SCHOOL;
 		}
-		if (SpecializationButtons[5].GetComponent<Toggle>().isOn)
+		if (ThemeButtons[5].GetComponent<Toggle>().isOn)
 		{
 			return Theme.SCIENCE;
 		}
-		if (SpecializationButtons[6].GetComponent<Toggle>().isOn)
+		if (ThemeButtons[6].GetComponent<Toggle>().isOn)
 		{
 			return Theme.SPACE;
 		}
-		if (SpecializationButtons[7].GetComponent<Toggle>().isOn)
+		if (ThemeButtons[7].GetComponent<Toggle>().isOn)
 		{
 			return Theme.WEATHER;
 		}
