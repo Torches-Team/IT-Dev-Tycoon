@@ -777,12 +777,267 @@ public class MainSceneController : MonoBehaviour
 	double GetProfitRatio()
 	{
 		double k = 1;
+		
+		if (product.specialization == Specialization.GAME)
+		{
+			switch (product.theme)
+			{
+				case Theme.SPORT:
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.MALE) k = 1.2;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.MALE) k = 1.3;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.MALE) k = 1.5;
+					
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.EVERYONE) k = 1.1;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.EVERYONE) k = 0.9;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.EVERYONE) k = 1;
+				
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.FEMALE) k = 0.6;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.FEMALE) k = 0.5;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.FEMALE) k = 0.5;
+					
+					break;
+				
+				case Theme.MUSIC:
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.MALE) k = 0.7;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.MALE) k = 0.8;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.MALE) k = 0.9;
+					
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.EVERYONE) k = 1;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.EVERYONE) k = 1.4;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.EVERYONE) k = 1.2;
+				
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.FEMALE) k = 0.7;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.FEMALE) k = 0.8;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.FEMALE) k = 0.8;
+					
+					break;
+				
+				case Theme.LOVE:
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.MALE) k = 0.5;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.MALE) k = 0.7;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.MALE) k = 0.7;
+					
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.EVERYONE) k = 0.9;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.EVERYONE) k = 1;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.EVERYONE) k = 1.1;
+				
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.FEMALE) k = 1.7;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.FEMALE) k = 1.3;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.FEMALE) k = 1.4;
+					
+					break;
+				
+				case Theme.FASHION:
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.MALE) k = 0.3;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.MALE) k = 0.8;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.MALE) k = 0.7;
+					
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.EVERYONE) k = 1.2;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.EVERYONE) k = 0.9;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.EVERYONE) k = 1;
+				
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.FEMALE) k = 1.5;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.FEMALE) k = 1.4;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.FEMALE) k = 1.5;
+					
+					break;
+					
+				case Theme.SCHOOL:
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.MALE) k = 1.4;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.MALE) k = 0.7;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.MALE) k = 0.4;
+					
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.EVERYONE) k = 1.2;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.EVERYONE) k = 0.9;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.EVERYONE) k = 0.5;
+				
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.FEMALE) k = 1.6;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.FEMALE) k = 0.9;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.FEMALE) k = 0.6;
+					
+					break;
+					
+				case Theme.SCIENCE:
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.MALE) k = 1.5;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.MALE) k = 0.8;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.MALE) k = 1.1;
+					
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.EVERYONE) k = 1.3;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.EVERYONE) k = 1.1;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.EVERYONE) k = 0.8;
+				
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.FEMALE) k = 1.4;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.FEMALE) k = 0.8;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.FEMALE) k = 1.2;
+					
+					break;
+					
+				case Theme.SPACE:
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.MALE) k = 1.5;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.MALE) k = 1;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.MALE) k = 1.2;
+					
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.EVERYONE) k = 1.1;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.EVERYONE) k = 0.9;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.EVERYONE) k = 1;
+				
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.FEMALE) k = 0.7;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.FEMALE) k = 0.6;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.FEMALE) k = 0.6;
+					
+					break;
+					
+				case Theme.WEATHER:
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.MALE) k = 0.2;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.MALE) k = 0.3;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.MALE) k = 0.3;
+					
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.EVERYONE) k = 0.3;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.EVERYONE) k = 0.3;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.EVERYONE) k = 0.2;
+				
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.FEMALE) k = 0.2;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.FEMALE) k = 0.3;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.FEMALE) k = 0.2;
+					
+					break;
+			}
+		}
+		
+		if (product.specialization == Specialization.WEBSITE)
+		{
+			switch (product.theme)
+			{
+				case Theme.SPORT:
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.MALE) k = 0.5;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.MALE) k = 1.2;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.MALE) k = 1.6;
+					
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.EVERYONE) k = 0.4;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.EVERYONE) k = 1.4;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.EVERYONE) k = 1.2;
+				
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.FEMALE) k = 0.4;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.FEMALE) k = 0.5;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.FEMALE) k = 1.2;
+					
+					break;
+				
+				case Theme.MUSIC:
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.MALE) k = 0.6;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.MALE) k = 0.8;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.MALE) k = 0.7;
+					
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.EVERYONE) k = 1.2;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.EVERYONE) k = 1.6;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.EVERYONE) k = 1.4;
+				
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.FEMALE) k = 0.6;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.FEMALE) k = 0.8;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.FEMALE) k = 0.7;
+					
+					break;
+				
+				case Theme.LOVE:
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.MALE) k = 0.2;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.MALE) k = 0.7;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.MALE) k = 1.4;
+					
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.EVERYONE) k = 0.2;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.EVERYONE) k = 0.8;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.EVERYONE) k = 1.5;
+				
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.FEMALE) k = 0.4;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.FEMALE) k = 1;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.FEMALE) k = 1.6;
+					
+					break;
+				
+				case Theme.FASHION:
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.MALE) k = 0.4;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.MALE) k = 1.3;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.MALE) k = 1.2;
+					
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.EVERYONE) k = 0.7;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.EVERYONE) k = 1.5;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.EVERYONE) k = 1.5;
+				
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.FEMALE) k = 1;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.FEMALE) k = 1.7;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.FEMALE) k = 1.6;
+					
+					break;
+					
+				case Theme.SCHOOL:
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.MALE) k = 0.8;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.MALE) k = 0.7;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.MALE) k = 0.4;
+					
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.EVERYONE) k = 1.7;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.EVERYONE) k = 0.7;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.EVERYONE) k = 0.5;
+				
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.FEMALE) k = 0.8;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.FEMALE) k = 0.7;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.FEMALE) k = 0.4;
+					
+					break;
+					
+				case Theme.SCIENCE:
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.MALE) k = 1.1;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.MALE) k = 1;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.MALE) k = 0.7;
+					
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.EVERYONE) k = 1.5;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.EVERYONE) k = 1.6;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.EVERYONE) k = 1.2;
+				
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.FEMALE) k = 1.1;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.FEMALE) k = 1;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.FEMALE) k = 0.7;
+					
+					break;
+					
+				case Theme.SPACE:
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.MALE) k = 1.2;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.MALE) k = 1.1;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.MALE) k = 1.2;
+					
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.EVERYONE) k = 1.3;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.EVERYONE) k = 1.5;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.EVERYONE) k = 1.2;
+				
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.FEMALE) k = 0.9;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.FEMALE) k = 0.6;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.FEMALE) k = 0.8;
+					
+					break;
+					
+				case Theme.WEATHER:
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.MALE) k = 0.5;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.MALE) k = 1.3;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.MALE) k = 1.1;
+					
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.EVERYONE) k = 0.7;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.EVERYONE) k = 1.6;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.EVERYONE) k = 1.5;
+				
+					if (product.ageAudience == AgeAudience.CHILDREN && product.genderAudience == GenderAudience.FEMALE) k = 0.5;
+					if (product.ageAudience == AgeAudience.EVERYONE && product.genderAudience == GenderAudience.FEMALE) k = 1.2;
+					if (product.ageAudience == AgeAudience.ADULT && product.genderAudience == GenderAudience.FEMALE) k = 1.4;
+					
+					break;
+			}
+		}
+		
 		foreach (var answer in answers)
 		{
 			k *= answer.AnswerProfitRatio;
 		}
+		
+		Debug.Log(k);
 		answers.Clear();
-		return k * 1.4;
+		return k;
 	}
 	
 	void Dividends()
